@@ -84,4 +84,12 @@ public class SimulationSpecification {
 	        machineShopSimulator.machine[firstMachine].getJobQ().put(theJob);
 	    }
 	}
+
+	void createEventAndMachineQueues(MachineShopSimulator machineShopSimulator) {
+	    // create event and machine queues
+	    machineShopSimulator.eList = new EventList(getNumMachines(), machineShopSimulator.largeTime);
+	    machineShopSimulator.machine = new Machine[getNumMachines() + 1];
+	    for (int i = 1; i <= getNumMachines(); i++)
+	        machineShopSimulator.machine[i] = new Machine();
+	}
 }

@@ -52,21 +52,13 @@ public class MachineShopSimulator {
         return lastJob;
     }
 
-    private void createEventAndMachineQueues(SimulationSpecification specification) {
-        // create event and machine queues
-        eList = new EventList(specification.getNumMachines(), largeTime);
-        machine = new Machine[specification.getNumMachines() + 1];
-        for (int i = 1; i <= specification.getNumMachines(); i++)
-            machine[i] = new Machine();
-    }
-
     /** load first jobs onto each machine
      * @param specification*/
     void startShop(SimulationSpecification specification) {
         // Move this to startShop when ready
         numMachines = specification.getNumMachines();
         numJobs = specification.getNumJobs();
-        createEventAndMachineQueues(specification);
+        specification.createEventAndMachineQueues(this);
 
         // Move this to startShop when ready
         specification.setMachineChangeOverTimes(this);

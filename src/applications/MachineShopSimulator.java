@@ -64,7 +64,7 @@ public class MachineShopSimulator {
         specification.setMachineChangeOverTimes(this);
 
         // Move this to startShop when ready
-        specification.setUpJobs(this);
+        specification.setUpJobs(this.machine);
 
         for (int p = 1; p <= numMachines; p++)
             changeState(p);

@@ -65,7 +65,7 @@ public class SimulationSpecification {
 	    }
 	}
 
-	void setUpJobs(MachineShopSimulator machineShopSimulator) {
+	void setUpJobs(Machine [] machine) {
 	    // input the jobs
 	    Job theJob;
 	    for (int i = 1; i <= getNumJobs(); i++) {
@@ -81,7 +81,7 @@ public class SimulationSpecification {
 	                firstMachine = theMachine; // job's first machine
 	            theJob.addTask(theMachine, theTaskTime); // add to
 	        } // task queue
-	        machineShopSimulator.machine[firstMachine].getJobQ().put(theJob);
+	        machine[firstMachine].getJobQ().put(theJob);
 	    }
 	}
 

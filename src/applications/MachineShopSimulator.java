@@ -11,36 +11,12 @@ public class MachineShopSimulator {
     public static final String BAD_MACHINE_NUMBER_OR_TASK_TIME = "bad machine number or task time";
 
     // data members of MachineShopSimulator
-    private int timeNow; // current time
+    int timeNow; // current time
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
-    private EventList eList; // pointer to event list
+    EventList eList; // pointer to event list
     public Machine[] machine; // array of machines
-    private int largeTime; // all machines finish before this
-
-    // methods
-    /**
-     * move theJob to machine for its next task
-     * 
-     * @return false iff no next task
-     */
-    boolean moveToNextMachine(Job theJob, SimulationResults simulationResults) {
-        if (theJob.getTaskQ().isEmpty()) {// no next task
-            simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
-            return false;
-        } else {// theJob has a next task
-                // get machine for next task
-            int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
-            // put on machine p's wait queue
-            machine[p].getJobQ().put(theJob);
-            theJob.setArrivalTime(timeNow);
-            // if p idle, schedule immediately
-            if (eList.nextEventTime(p) == largeTime) {// machine is idle
-                changeState(p);
-            }
-            return true;
-        }
-    }
+    int largeTime; // all machines finish before this
 
     /**
      * change the state of theMachine
@@ -112,7 +88,7 @@ public class MachineShopSimulator {
             Job theJob = changeState(nextToFinish);
             // move theJob to its next machine
             // decrement numJobs if theJob has finished
-            if (theJob != null && !moveToNextMachine(theJob, simulationResults))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
                 numJobs--;
         }
     }

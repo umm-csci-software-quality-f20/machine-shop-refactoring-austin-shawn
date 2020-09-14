@@ -50,4 +50,29 @@ class Job {
         return id;
     }
 
+	/**
+	 * move theJob to machine for its next task
+	 * 
+	 * @param machineShopSimulator TODO
+	 * @param simulationResults TODO
+	 * @return false iff no next task
+	 */
+	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults) {
+	    if (getTaskQ().isEmpty()) {// no next task
+	        simulationResults.setJobCompletionData(getId(), machineShopSimulator.timeNow, machineShopSimulator.timeNow - getLength());
+	        return false;
+	    } else {// theJob has a next task
+	            // get machine for next task
+	        int p = ((Task) getTaskQ().getFrontElement()).getMachine();
+	        // put on machine p's wait queue
+	        machineShopSimulator.machine[p].getJobQ().put(this);
+	        setArrivalTime(machineShopSimulator.timeNow);
+	        // if p idle, schedule immediately
+	        if (machineShopSimulator.eList.nextEventTime(p) == machineShopSimulator.largeTime) {// machine is idle
+	            machineShopSimulator.changeState(p);
+	        }
+	        return true;
+	    }
+	}
+
 }

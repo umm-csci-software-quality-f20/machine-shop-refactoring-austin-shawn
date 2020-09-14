@@ -11,36 +11,12 @@ public class MachineShopSimulator {
     public static final String BAD_MACHINE_NUMBER_OR_TASK_TIME = "bad machine number or task time";
 
     // data members of MachineShopSimulator
-    private int timeNow; // current time
+    int timeNow; // current time
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
-    private EventList eList; // pointer to event list
-    private Machine[] machine; // array of machines
-    private int largeTime; // all machines finish before this
-
-    // methods
-    /**
-     * move theJob to machine for its next task
-     * 
-     * @return false iff no next task
-     */
-    boolean moveToNextMachine(Job theJob, SimulationResults simulationResults) {
-        if (theJob.getTaskQ().isEmpty()) {// no next task
-            simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
-            return false;
-        } else {// theJob has a next task
-                // get machine for next task
-            int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
-            // put on machine p's wait queue
-            machine[p].getJobQ().put(theJob);
-            theJob.setArrivalTime(timeNow);
-            // if p idle, schedule immediately
-            if (eList.nextEventTime(p) == largeTime) {// machine is idle
-                changeState(p);
-            }
-            return true;
-        }
-    }
+    EventList eList; // pointer to event list
+    public Machine[] machine; // array of machines
+    int largeTime; // all machines finish before this
 
     /**
      * change the state of theMachine
@@ -76,53 +52,19 @@ public class MachineShopSimulator {
         return lastJob;
     }
 
-    private void setMachineChangeOverTimes(SimulationSpecification specification) {
-        for (int i = 1; i<=specification.getNumMachines(); ++i) {
-            machine[i].setChangeTime(specification.getChangeOverTimes(i));
-        }
-    }
-
-    private void setUpJobs(SimulationSpecification specification) {
-        // input the jobs
-        Job theJob;
-        for (int i = 1; i <= specification.getNumJobs(); i++) {
-            int tasks = specification.getJobSpecifications(i).getNumTasks();
-            int firstMachine = 0; // machine for first task
-
-            // create the job
-            theJob = new Job(i);
-            for (int j = 1; j <= tasks; j++) {
-                int theMachine = specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
-                int theTaskTime = specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
-                if (j == 1)
-                    firstMachine = theMachine; // job's first machine
-                theJob.addTask(theMachine, theTaskTime); // add to
-            } // task queue
-            machine[firstMachine].getJobQ().put(theJob);
-        }
-    }
-
-    private void createEventAndMachineQueues(SimulationSpecification specification) {
-        // create event and machine queues
-        eList = new EventList(specification.getNumMachines(), largeTime);
-        machine = new Machine[specification.getNumMachines() + 1];
-        for (int i = 1; i <= specification.getNumMachines(); i++)
-            machine[i] = new Machine();
-    }
-
     /** load first jobs onto each machine
      * @param specification*/
     void startShop(SimulationSpecification specification) {
         // Move this to startShop when ready
         numMachines = specification.getNumMachines();
         numJobs = specification.getNumJobs();
-        createEventAndMachineQueues(specification);
+        specification.createEventAndMachineQueues(this);
 
         // Move this to startShop when ready
-        setMachineChangeOverTimes(specification);
+        specification.setMachineChangeOverTimes(this);
 
         // Move this to startShop when ready
-        setUpJobs(specification);
+        specification.setUpJobs(this);
 
         for (int p = 1; p <= numMachines; p++)
             changeState(p);
@@ -138,7 +80,7 @@ public class MachineShopSimulator {
             Job theJob = changeState(nextToFinish);
             // move theJob to its next machine
             // decrement numJobs if theJob has finished
-            if (theJob != null && !moveToNextMachine(theJob, simulationResults))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
                 numJobs--;
         }
     }

@@ -64,4 +64,24 @@ public class SimulationSpecification {
 	        machineShopSimulator.machine[i].setChangeTime(getChangeOverTimes(i));
 	    }
 	}
+
+	void setUpJobs(MachineShopSimulator machineShopSimulator) {
+	    // input the jobs
+	    Job theJob;
+	    for (int i = 1; i <= getNumJobs(); i++) {
+	        int tasks = getJobSpecifications(i).getNumTasks();
+	        int firstMachine = 0; // machine for first task
+	
+	        // create the job
+	        theJob = new Job(i);
+	        for (int j = 1; j <= tasks; j++) {
+	            int theMachine = getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
+	            int theTaskTime = getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
+	            if (j == 1)
+	                firstMachine = theMachine; // job's first machine
+	            theJob.addTask(theMachine, theTaskTime); // add to
+	        } // task queue
+	        machineShopSimulator.machine[firstMachine].getJobQ().put(theJob);
+	    }
+	}
 }

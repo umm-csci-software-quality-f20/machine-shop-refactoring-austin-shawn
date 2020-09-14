@@ -15,7 +15,7 @@ public class MachineShopSimulator {
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
-    private Machine[] machine; // array of machines
+    public Machine[] machine; // array of machines
     private int largeTime; // all machines finish before this
 
     // methods
@@ -76,12 +76,6 @@ public class MachineShopSimulator {
         return lastJob;
     }
 
-    private void setMachineChangeOverTimes(SimulationSpecification specification) {
-        for (int i = 1; i<=specification.getNumMachines(); ++i) {
-            machine[i].setChangeTime(specification.getChangeOverTimes(i));
-        }
-    }
-
     private void setUpJobs(SimulationSpecification specification) {
         // input the jobs
         Job theJob;
@@ -119,7 +113,7 @@ public class MachineShopSimulator {
         createEventAndMachineQueues(specification);
 
         // Move this to startShop when ready
-        setMachineChangeOverTimes(specification);
+        specification.setMachineChangeOverTimes(this);
 
         // Move this to startShop when ready
         setUpJobs(specification);

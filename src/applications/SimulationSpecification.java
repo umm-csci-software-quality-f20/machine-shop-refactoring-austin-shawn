@@ -58,4 +58,10 @@ public class SimulationSpecification {
         builder.append(">");
         return builder.toString();
     }
+
+	public void setMachineChangeOverTimes(MachineShopSimulator machineShopSimulator) {
+	    for (int i = 1; i<=getNumMachines(); ++i) {
+	        machineShopSimulator.machine[i].setChangeTime(getChangeOverTimes(i));
+	    }
+	}
 }

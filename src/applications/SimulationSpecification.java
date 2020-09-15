@@ -135,4 +135,14 @@ public class SimulationSpecification {
 			}
 		}
 	}
+
+	public  SimulationResults runSimulation(MachineShopSimulator machineShopSimulator) {
+	    machineShopSimulator.largeTime = Integer.MAX_VALUE;
+	    machineShopSimulator.timeNow = 0;
+	    startShop(machineShopSimulator); // initial machine loading
+	    SimulationResults simulationResults = new SimulationResults(machineShopSimulator.numJobs);
+	    simulationResults.simulate(machineShopSimulator); // run all jobs through shop
+	    simulationResults.outputStatistics(machineShopSimulator);
+	    return simulationResults;
+	}
 }

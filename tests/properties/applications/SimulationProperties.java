@@ -18,7 +18,7 @@ public class SimulationProperties {
                     SimulationSpecification specification)
     {
         MachineShopSimulator simulator = new MachineShopSimulator();
-        final SimulationResults results = simulator.runSimulation(specification);
+        final SimulationResults results = specification.runSimulation(simulator);
         final int finishTime = results.getFinishTime();
         final JobCompletionData[] jobCompletionData = results.getJobCompletionData();
         final int lastJobCompletionTime = jobCompletionData[jobCompletionData.length-1].getCompletionTime();
@@ -31,7 +31,7 @@ public class SimulationProperties {
                     SimulationSpecification specification)
     {
         MachineShopSimulator simulator = new MachineShopSimulator();
-        final SimulationResults results = simulator.runSimulation(specification);
+        final SimulationResults results = specification.runSimulation(simulator);
 
         int totalMachineWaitTime = 0;
         for (int waitTime : results.getTotalWaitTimePerMachine()) {
@@ -55,7 +55,7 @@ public class SimulationProperties {
                 SimulationSpecification specification)
     {
         MachineShopSimulator simulator = new MachineShopSimulator();
-        final SimulationResults results = simulator.runSimulation(specification);
+        final SimulationResults results = specification.runSimulation(simulator);
 
         JobCompletionData[] jobCompletionData = results.getJobCompletionData();
         for (int i=1; i<jobCompletionData.length-1; ++i) {
@@ -70,7 +70,7 @@ public class SimulationProperties {
                 SimulationSpecification specification)
     {
         MachineShopSimulator simulator = new MachineShopSimulator();
-        final SimulationResults results = simulator.runSimulation(specification);
+        final SimulationResults results = specification.runSimulation(simulator);
 
         int numMachines = specification.getNumMachines();
         int numJobs = specification.getNumJobs();

@@ -18,16 +18,6 @@ public class MachineShopSimulator {
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
 
-    public  SimulationResults runSimulation(SimulationSpecification specification) {
-        largeTime = Integer.MAX_VALUE;
-        timeNow = 0;
-        specification.startShop(this); // initial machine loading
-        SimulationResults simulationResults = new SimulationResults(numJobs);
-        simulationResults.simulate(this); // run all jobs through shop
-        simulationResults.outputStatistics(this);
-        return simulationResults;
-    }
-
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         /*
@@ -39,7 +29,7 @@ public class MachineShopSimulator {
         final SpecificationReader specificationReader = new SpecificationReader();
         SimulationSpecification specification = specificationReader.readSpecification();
         MachineShopSimulator simulator = new MachineShopSimulator();
-        SimulationResults simulationResults = simulator.runSimulation(specification);
+        SimulationResults simulationResults = specification.runSimulation(simulator);
         simulationResults.print();
     }
 }

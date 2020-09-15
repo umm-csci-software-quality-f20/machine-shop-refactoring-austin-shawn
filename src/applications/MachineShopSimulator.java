@@ -18,22 +18,6 @@ public class MachineShopSimulator {
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
 
-    void setTotalWaitTimePerMachine(SimulationResults simulationResults) {
-        int[] totalWaitTimePerMachine = new int[numMachines+1];
-        for (int i=1; i<=numMachines; ++i) {
-            totalWaitTimePerMachine[i] = machine[i].getTotalWait();
-        }
-        simulationResults.setTotalWaitTimePerMachine(totalWaitTimePerMachine);
-    }
-
-    void setNumTasksPerMachine(SimulationResults simulationResults) {
-        int[] numTasksPerMachine = new int[numMachines+1];
-        for (int i=1; i<=numMachines; ++i) {
-            numTasksPerMachine[i] = machine[i].getNumTasks();
-        }
-        simulationResults.setNumTasksPerMachine(numTasksPerMachine);
-    }
-
     public  SimulationResults runSimulation(SimulationSpecification specification) {
         largeTime = Integer.MAX_VALUE;
         timeNow = 0;

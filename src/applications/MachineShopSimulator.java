@@ -71,7 +71,8 @@ public class MachineShopSimulator {
     }
 
     /** process all jobs to completion
-     * @param simulationResults*/
+     * @param simulationResults
+     * */
     void simulate(SimulationResults simulationResults) {
         while (numJobs > 0) {// at least one job left
             int nextToFinish = eList.nextEventMachine();
@@ -86,7 +87,8 @@ public class MachineShopSimulator {
     }
 
     /** output wait times at machines
-     * @param simulationResults*/
+     * @param simulationResults
+     * */
     void outputStatistics(SimulationResults simulationResults) {
         simulationResults.setFinishTime(timeNow);
         simulationResults.setNumMachines(numMachines);

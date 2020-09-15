@@ -18,42 +18,9 @@ public class MachineShopSimulator {
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
 
-    /**
-     * change the state of theMachine
-     * 
-     * @return last job run on this machine
-     */
-    Job changeState(int theMachine) {// Task on theMachine has finished,
-                                            // schedule next one.
-        Job lastJob;
-        if (machine[theMachine].getActiveJob() == null) {// in idle or change-over
-                                                    // state
-            lastJob = null;
-            // wait over, ready for new job
-            if (machine[theMachine].getJobQ().isEmpty()) // no waiting job
-                eList.setFinishTime(theMachine, largeTime);
-            else {// take job off the queue and work on it
-                machine[theMachine].setActiveJob((Job) machine[theMachine].getJobQ()
-                        .remove());
-                machine[theMachine].setTotalWait(machine[theMachine].getTotalWait() + timeNow
-                        - machine[theMachine].getActiveJob().getArrivalTime());
-                machine[theMachine].setNumTasks(machine[theMachine].getNumTasks() + 1);
-                int t = machine[theMachine].getActiveJob().removeNextTask();
-                eList.setFinishTime(theMachine, timeNow + t);
-            }
-        } else {// task has just finished on machine[theMachine]
-                // schedule change-over time
-            lastJob = machine[theMachine].getActiveJob();
-            machine[theMachine].setActiveJob(null);
-            eList.setFinishTime(theMachine, timeNow
-                    + machine[theMachine].getChangeTime());
-        }
-
-        return lastJob;
-    }
-
     /** load first jobs onto each machine
-     * @param specification*/
+     * @param specification
+     * */
     void startShop(SimulationSpecification specification) {
         // Move this to startShop when ready
         numMachines = specification.getNumMachines();
@@ -66,8 +33,32 @@ public class MachineShopSimulator {
         // Move this to startShop when ready
         specification.setUpJobs(this.machine);
 
-        for (int p = 1; p <= numMachines; p++)
-            changeState(p);
+        for (int p = 1; p <= numMachines; p++) {
+			// schedule next one.
+			Job lastJob;
+			if (machine[p].getActiveJob() == null) {// in idle or change-over
+			                                            // state
+			    lastJob = null;
+			    // wait over, ready for new job
+			    if (machine[p].getJobQ().isEmpty()) // no waiting job
+			        eList.setFinishTime(p, largeTime);
+			    else {// take job off the queue and work on it
+			        machine[p].setActiveJob((Job) machine[p].getJobQ()
+			                .remove());
+			        machine[p].setTotalWait(machine[p].getTotalWait() + timeNow
+			                - machine[p].getActiveJob().getArrivalTime());
+			        machine[p].setNumTasks(machine[p].getNumTasks() + 1);
+			        int t = machine[p].getActiveJob().removeNextTask();
+			        eList.setFinishTime(p, timeNow + t);
+			    }
+			} else {// task has just finished on machine[theMachine]
+			        // schedule change-over time
+			    lastJob = machine[p].getActiveJob();
+			    machine[p].setActiveJob(null);
+			    eList.setFinishTime(p, timeNow
+			            + machine[p].getChangeTime());
+			}
+		}
     }
 
   

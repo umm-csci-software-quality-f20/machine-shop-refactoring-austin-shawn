@@ -69,7 +69,30 @@ class Job {
 	        setArrivalTime(machineShopSimulator.timeNow);
 	        // if p idle, schedule immediately
 	        if (machineShopSimulator.eList.nextEventTime(p) == machineShopSimulator.largeTime) {// machine is idle
-	            machineShopSimulator.changeState(p);
+	            // schedule next one.
+				Job lastJob;
+				if (machineShopSimulator.machine[p].getActiveJob() == null) {// in idle or change-over
+				                                            // state
+				    lastJob = null;
+				    // wait over, ready for new job
+				    if (machineShopSimulator.machine[p].getJobQ().isEmpty()) // no waiting job
+				        machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.largeTime);
+				    else {// take job off the queue and work on it
+				        machineShopSimulator.machine[p].setActiveJob((Job) machineShopSimulator.machine[p].getJobQ()
+				                .remove());
+				        machineShopSimulator.machine[p].setTotalWait(machineShopSimulator.machine[p].getTotalWait() + machineShopSimulator.timeNow
+				                - machineShopSimulator.machine[p].getActiveJob().getArrivalTime());
+				        machineShopSimulator.machine[p].setNumTasks(machineShopSimulator.machine[p].getNumTasks() + 1);
+				        int t = machineShopSimulator.machine[p].getActiveJob().removeNextTask();
+				        machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.timeNow + t);
+				    }
+				} else {// task has just finished on machine[theMachine]
+				        // schedule change-over time
+				    lastJob = machineShopSimulator.machine[p].getActiveJob();
+				    machineShopSimulator.machine[p].setActiveJob(null);
+				    machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.timeNow
+				            + machineShopSimulator.machine[p].getChangeTime());
+				}
 	        }
 	        return true;
 	    }

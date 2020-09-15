@@ -63,39 +63,43 @@ class Job {
 	        return false;
 	    } else {// theJob has a next task
 	            // get machine for next task
-	        int p = ((Task) getTaskQ().getFrontElement()).getMachine();
+	        int index = ((Task) getTaskQ().getFrontElement()).getMachine();
 	        // put on machine p's wait queue
-	        machineShopSimulator.machine[p].getJobQ().put(this);
+	        machineShopSimulator.machine[index].getJobQ().put(this);
 	        setArrivalTime(machineShopSimulator.timeNow);
 	        // if p idle, schedule immediately
-	        if (machineShopSimulator.eList.nextEventTime(p) == machineShopSimulator.largeTime) {// machine is idle
-	            // schedule next one.
-				Job lastJob;
-				if (machineShopSimulator.machine[p].getActiveJob() == null) {// in idle or change-over
-				                                            // state
-				    lastJob = null;
-				    // wait over, ready for new job
-				    if (machineShopSimulator.machine[p].getJobQ().isEmpty()) // no waiting job
-				        machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.largeTime);
-				    else {// take job off the queue and work on it
-				        machineShopSimulator.machine[p].setActiveJob((Job) machineShopSimulator.machine[p].getJobQ()
-				                .remove());
-				        machineShopSimulator.machine[p].setTotalWait(machineShopSimulator.machine[p].getTotalWait() + machineShopSimulator.timeNow
-				                - machineShopSimulator.machine[p].getActiveJob().getArrivalTime());
-				        machineShopSimulator.machine[p].setNumTasks(machineShopSimulator.machine[p].getNumTasks() + 1);
-				        int t = machineShopSimulator.machine[p].getActiveJob().removeNextTask();
-				        machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.timeNow + t);
-				    }
-				} else {// task has just finished on machine[theMachine]
-				        // schedule change-over time
-				    lastJob = machineShopSimulator.machine[p].getActiveJob();
-				    machineShopSimulator.machine[p].setActiveJob(null);
-				    machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.timeNow
-				            + machineShopSimulator.machine[p].getChangeTime());
-				}
-	        }
+	        ChangeState(machineShopSimulator, index);
 	        return true;
 	    }
+	}
+
+	private void ChangeState(MachineShopSimulator machineShopSimulator, int index) {
+		if (machineShopSimulator.eList.nextEventTime(index) == machineShopSimulator.largeTime) {// machine is idle
+		    // schedule next one.
+			Job lastJob;
+			if (machineShopSimulator.machine[index].getActiveJob() == null) {// in idle or change-over
+			                                            // state
+			    lastJob = null;
+			    // wait over, ready for new job
+			    if (machineShopSimulator.machine[index].getJobQ().isEmpty()) // no waiting job
+			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.largeTime);
+			    else {// take job off the queue and work on it
+			        machineShopSimulator.machine[index].setActiveJob((Job) machineShopSimulator.machine[index].getJobQ()
+			                .remove());
+			        machineShopSimulator.machine[index].setTotalWait(machineShopSimulator.machine[index].getTotalWait() + machineShopSimulator.timeNow
+			                - machineShopSimulator.machine[index].getActiveJob().getArrivalTime());
+			        machineShopSimulator.machine[index].setNumTasks(machineShopSimulator.machine[index].getNumTasks() + 1);
+			        int t = machineShopSimulator.machine[index].getActiveJob().removeNextTask();
+			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.timeNow + t);
+			    }
+			} else {// task has just finished on machine[theMachine]
+			        // schedule change-over time
+			    lastJob = machineShopSimulator.machine[index].getActiveJob();
+			    machineShopSimulator.machine[index].setActiveJob(null);
+			    machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.timeNow
+			            + machineShopSimulator.machine[index].getChangeTime());
+			}
+		}
 	}
 
 }

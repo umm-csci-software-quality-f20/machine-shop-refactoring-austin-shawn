@@ -13,7 +13,7 @@ public class MachineShopSimulator {
     // data members of MachineShopSimulator
     int timeNow; // current time
     private int numMachines; // number of machines
-    private int numJobs; // number of jobs
+    public int numJobs; // number of jobs
     EventList eList; // pointer to event list
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
@@ -70,22 +70,7 @@ public class MachineShopSimulator {
             changeState(p);
     }
 
-    /** process all jobs to completion
-     * @param simulationResults
-     * */
-    void simulate(SimulationResults simulationResults) {
-        while (numJobs > 0) {// at least one job left
-            int nextToFinish = eList.nextEventMachine();
-            timeNow = eList.nextEventTime(nextToFinish);
-            // change job on machine nextToFinish
-            Job theJob = changeState(nextToFinish);
-            // move theJob to its next machine
-            // decrement numJobs if theJob has finished
-            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
-                numJobs--;
-        }
-    }
-
+  
     /** output wait times at machines
      * @param simulationResults
      * */
@@ -117,7 +102,7 @@ public class MachineShopSimulator {
         timeNow = 0;
         startShop(specification); // initial machine loading
         SimulationResults simulationResults = new SimulationResults(numJobs);
-        simulate(simulationResults); // run all jobs through shop
+        simulationResults.simulate(this); // run all jobs through shop
         outputStatistics(simulationResults);
         return simulationResults;
     }

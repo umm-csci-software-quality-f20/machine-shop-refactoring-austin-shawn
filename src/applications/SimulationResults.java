@@ -67,4 +67,16 @@ public class SimulationResults {
         jobCompletions[nextJob] = jobCompletionData;
         nextJob++;
     }
+    void simulate(MachineShopSimulator machineShopSimulator) {
+        while (machineShopSimulator.numJobs > 0) {// at least one job left
+            int nextToFinish = machineShopSimulator.eList.nextEventMachine();
+            machineShopSimulator.timeNow = machineShopSimulator.eList.nextEventTime(nextToFinish);
+            // change job on machine nextToFinish
+            Job theJob = machineShopSimulator.changeState(nextToFinish);
+            // move theJob to its next machine
+            // decrement numJobs if theJob has finished
+            if (theJob != null && !theJob.moveToNextMachine(machineShopSimulator, this))
+                machineShopSimulator.numJobs--;
+        }
+    }
 }

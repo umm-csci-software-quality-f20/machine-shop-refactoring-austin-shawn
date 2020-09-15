@@ -103,4 +103,14 @@ public class SimulationResults {
                 machineShopSimulator.numJobs--;
         }
     }
+
+	/** output wait times at machines
+	 * @param machineShopSimulator TODO
+	 * */
+	void outputStatistics(MachineShopSimulator machineShopSimulator) {
+	    setFinishTime(machineShopSimulator.timeNow);
+	    setNumMachines(machineShopSimulator.numMachines);
+	    machineShopSimulator.setNumTasksPerMachine(this);
+	    machineShopSimulator.setTotalWaitTimePerMachine(this);
+	}
 }

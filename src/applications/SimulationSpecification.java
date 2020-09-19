@@ -119,7 +119,7 @@ public class SimulationSpecification {
 			                                            // state
 			    lastJob = null;
 			    // wait over, ready for new job
-			    if (machineShopSimulator.machine[p].getJobQ().isEmpty()) // no waiting job
+			    if (machineShopSimulator.machine[p].jobQisEmpty()) // no waiting job
 			        machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.largeTime);
 			    else {// take job off the queue and work on it
 			        setupJob(machineShopSimulator, p);

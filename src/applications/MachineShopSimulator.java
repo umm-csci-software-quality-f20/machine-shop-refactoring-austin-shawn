@@ -38,12 +38,13 @@ public class MachineShopSimulator {
 	        int nextToFinish = eList.nextEventMachine();
 	        timeNow = eList.nextEventTime(nextToFinish);
 			// schedule next one.
-			Job lastJob;
-			if (machine[nextToFinish].getActiveJob() == null) {// in idle or change-over
+            Job lastJob;
+            Machine nextMachine = machine[nextToFinish];
+			if (nextMachine.getActiveJob() == null) {// in idle or change-over
 			                                            // state
 			    lastJob = null;
 			    // wait over, ready for new job
-			    if (machine[nextToFinish].getJobQ().isEmpty()) // no waiting job
+			    if (nextMachine.jobQisEmpty()) // no waiting job
 			        eList.setFinishTime(nextToFinish, largeTime);
 			    else {// take job off the queue and work on it
 			        machine[nextToFinish].setActiveJob((Job) machine[nextToFinish].getJobQ()

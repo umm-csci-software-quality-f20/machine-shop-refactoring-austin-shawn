@@ -68,12 +68,12 @@ class Job {
 	        machineShopSimulator.machine[index].getJobQ().put(this);
 	        setArrivalTime(machineShopSimulator.timeNow);
 	        // if p idle, schedule immediately
-	        ChangeState(machineShopSimulator, index);
+	        changeState(machineShopSimulator, index);
 	        return true;
 	    }
 	}
 
-	private void ChangeState(MachineShopSimulator machineShopSimulator, int index) {
+	private void changeState(MachineShopSimulator machineShopSimulator, int index) {
 		if (machineShopSimulator.eList.nextEventTime(index) == machineShopSimulator.largeTime) {// machine is idle
 		    // schedule next one.
 			Job lastJob;
@@ -81,7 +81,7 @@ class Job {
 			                                            // state
 			    lastJob = null;
 			    // wait over, ready for new job
-			    if (machineShopSimulator.machine[index].getJobQ().isEmpty()) // no waiting job
+			    if (machineShopSimulator.machine[index].jobQisEmpty()) // no waiting job
 			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.largeTime);
 			    else {// take job off the queue and work on it
 			        machineShopSimulator.machine[index].setActiveJob((Job) machineShopSimulator.machine[index].getJobQ()

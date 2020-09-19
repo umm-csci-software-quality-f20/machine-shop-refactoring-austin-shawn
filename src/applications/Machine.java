@@ -18,6 +18,10 @@ class Machine {
     public LinkedQueue getJobQ() {
         return jobQ;
     }
+    
+    public boolean jobQisEmpty(){
+        return jobQ.isEmpty();
+    }
 
     public int getChangeTime() {
         return changeTime;

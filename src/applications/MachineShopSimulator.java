@@ -69,15 +69,21 @@ public class MachineShopSimulator {
 	        if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
 	            numJobs--;
 	    }
+    }
+    public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
+	    largeTime = Integer.MAX_VALUE;
+	    timeNow = 0;
+	    simulationSpecification.startShop(this); // initial machine loading
+	    SimulationResults simulationResults = new SimulationResults(getNumJobs());
+	    simulate(simulationResults); // run all jobs through shop
+	    simulationResults.outputStatistics(this);
+	    return simulationResults;
 	}
     // getters and setters
     public int getTimeNow(){
         return timeNow;
     }
-    public void setTimenow(int newTime){
-        timeNow = newTime;
-    }
-
+  
     public int getNumMachines() {
         return numMachines;
     }
@@ -120,17 +126,4 @@ public class MachineShopSimulator {
         return largeTime;
     }
 
-    public void setLargeTime(int largeTime) {
-        this.largeTime = largeTime;
-    }
-
-	public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
-	    setLargeTime(Integer.MAX_VALUE);
-	    setTimenow(0);;
-	    simulationSpecification.startShop(this); // initial machine loading
-	    SimulationResults simulationResults = new SimulationResults(getNumJobs());
-	    simulate(simulationResults); // run all jobs through shop
-	    simulationResults.outputStatistics(this);
-	    return simulationResults;
-	}
 }

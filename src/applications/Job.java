@@ -26,7 +26,7 @@ class Job {
      */
     public int removeNextTask() {
         int theTime = ((Task) getTaskQ().remove()).getTime();
-        length = getLength() + theTime;
+        length = length + theTime;
         return theTime;
     }
 
@@ -34,21 +34,10 @@ class Job {
         return taskQ;
     }
 
-    public int getLength() {
-        return length;
-    }
-
     public int getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(int arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public int getId() {
-        return id;
-    }
 
 	/**
 	 * move theJob to machine for its next task
@@ -59,14 +48,14 @@ class Job {
 	 */
 	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults) {
 	    if (getTaskQ().isEmpty()) {// no next task
-	        simulationResults.setJobCompletionData(getId(), machineShopSimulator.getTimeNow(), machineShopSimulator.getTimeNow() - getLength());
+	        simulationResults.setJobCompletionData(id, machineShopSimulator.getTimeNow(), machineShopSimulator.getTimeNow() - length);
 	        return false;
 	    } else {// theJob has a next task
 	            // get machine for next task
 	        int index = ((Task) getTaskQ().getFrontElement()).getMachine();
 	        // put on machine p's wait queue
-	        machineShopSimulator.machineAt(index).getJobQ().put(this);
-	        setArrivalTime(machineShopSimulator.getTimeNow());
+            machineShopSimulator.machineAt(index).getJobQ().put(this);
+            arrivalTime = machineShopSimulator.getTimeNow();
 	        // if p idle, schedule immediately
 	        changeState(machineShopSimulator, index);
 	        return true;

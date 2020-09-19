@@ -99,7 +99,7 @@ public class SimulationSpecification {
 	void startShop(MachineShopSimulator machineShopSimulator) {
 	    // Move this to startShop when ready
 	    machineShopSimulator.setNumMachines(getNumMachines());
-	    machineShopSimulator.numJobs = getNumJobs();
+	    machineShopSimulator.setNumJobs(getNumJobs());
 	    createEventAndMachineQueues(machineShopSimulator);
 	
 	    // Move this to startShop when ready
@@ -148,7 +148,7 @@ public class SimulationSpecification {
 	    machineShopSimulator.largeTime = Integer.MAX_VALUE;
 	    machineShopSimulator.setTimenow(0);;
 	    startShop(machineShopSimulator); // initial machine loading
-	    SimulationResults simulationResults = new SimulationResults(machineShopSimulator.numJobs);
+	    SimulationResults simulationResults = new SimulationResults(machineShopSimulator.getNumJobs());
 	    machineShopSimulator.simulate(simulationResults); // run all jobs through shop
 	    simulationResults.outputStatistics(machineShopSimulator);
 	    return simulationResults;

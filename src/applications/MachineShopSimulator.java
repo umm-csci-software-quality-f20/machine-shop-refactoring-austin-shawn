@@ -13,7 +13,7 @@ public class MachineShopSimulator {
     // data members of MachineShopSimulator
     private int timeNow; // current time
     private int numMachines; // number of machines
-    public int numJobs; // number of jobs
+    private int numJobs; // number of jobs
     EventList eList; // pointer to event list
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
@@ -77,7 +77,7 @@ public class MachineShopSimulator {
     public void setTimenow(int newTime){
         timeNow = newTime;
     }
-    
+
     public int getNumMachines() {
         return numMachines;
     }

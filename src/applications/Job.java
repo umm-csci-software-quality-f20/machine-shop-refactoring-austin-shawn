@@ -74,7 +74,7 @@ class Job {
 	}
 
 	private void changeState(MachineShopSimulator machineShopSimulator, int index) {
-		if (machineShopSimulator.eList.nextEventTime(index) == machineShopSimulator.largeTime) {// machine is idle
+		if (machineShopSimulator.geteList().nextEventTime(index) == machineShopSimulator.largeTime) {// machine is idle
 		    // schedule next one.
 			Job lastJob;
 			if (machineShopSimulator.machine[index].getActiveJob() == null) {// in idle or change-over
@@ -82,7 +82,7 @@ class Job {
 			    lastJob = null;
 			    // wait over, ready for new job
 			    if (machineShopSimulator.machine[index].jobQisEmpty()) // no waiting job
-			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.largeTime);
+			        machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.largeTime);
 			    else {// take job off the queue and work on it
 			        machineShopSimulator.machine[index].setActiveJob((Job) machineShopSimulator.machine[index].getJobQ()
 			                .remove());
@@ -90,13 +90,13 @@ class Job {
                      + machineShopSimulator.getTimeNow() - machineShopSimulator.machine[index].getActiveJob().getArrivalTime());
 			        machineShopSimulator.machine[index].setNumTasks(machineShopSimulator.machine[index].getNumTasks() + 1);
 			        int t = machineShopSimulator.machine[index].getActiveJob().removeNextTask();
-			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.getTimeNow() + t);
+			        machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.getTimeNow() + t);
 			    }
 			} else {// task has just finished on machine[theMachine]
 			        // schedule change-over time
 			    lastJob = machineShopSimulator.machine[index].getActiveJob();
 			    machineShopSimulator.machine[index].setActiveJob(null);
-			    machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.getTimeNow()
+			    machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.getTimeNow()
 			            + machineShopSimulator.machine[index].getChangeTime());
 			}
 		}

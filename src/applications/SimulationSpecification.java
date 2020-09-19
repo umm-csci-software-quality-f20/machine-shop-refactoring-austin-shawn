@@ -87,7 +87,7 @@ public class SimulationSpecification {
 
 	void createEventAndMachineQueues(MachineShopSimulator machineShopSimulator) {
 	    // create event and machine queues
-	    machineShopSimulator.eList = new EventList(getNumMachines(), machineShopSimulator.largeTime);
+	    machineShopSimulator.seteList(new EventList(getNumMachines(), machineShopSimulator.largeTime ));
 	    machineShopSimulator.machine = new Machine[getNumMachines() + 1];
 	    for (int i = 1; i <= getNumMachines(); i++)
 	        machineShopSimulator.machine[i] = new Machine();
@@ -120,7 +120,7 @@ public class SimulationSpecification {
 			    lastJob = null;
 			    // wait over, ready for new job
 			    if (machineShopSimulator.machine[p].jobQisEmpty()) // no waiting job
-			        machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.largeTime);
+			        machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.largeTime);
 			    else {// take job off the queue and work on it
 			        setupJob(machineShopSimulator, p);
 			    }
@@ -128,7 +128,7 @@ public class SimulationSpecification {
 			        // schedule change-over time
 			    lastJob = machineShopSimulator.machine[p].getActiveJob();
 			    machineShopSimulator.machine[p].setActiveJob(null);
-			    machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.getTimeNow()
+			    machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getTimeNow()
 			            + machineShopSimulator.machine[p].getChangeTime());
 			}
 		}
@@ -141,7 +141,7 @@ public class SimulationSpecification {
 		        - machineShopSimulator.machine[p].getActiveJob().getArrivalTime());
 		machineShopSimulator.machine[p].setNumTasks(machineShopSimulator.machine[p].getNumTasks() + 1);
 		int t = machineShopSimulator.machine[p].getActiveJob().removeNextTask();
-		machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.getTimeNow() + t);
+		machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getTimeNow() + t);
 	}
 
 	public  SimulationResults runSimulation(MachineShopSimulator machineShopSimulator) {

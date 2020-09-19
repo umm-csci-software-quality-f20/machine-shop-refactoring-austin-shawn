@@ -7,15 +7,15 @@ public class SimulationResults {
     private int numMachines;
     private int[] numTasksPerMachine;
     private int[] totalWaitTimePerMachine;
-    private JobCompletionData[] jobCompletions;
+    private Job[] jobCompletions;
     private int nextJob = 0;
 
     public SimulationResults(int numJobs) {
-        jobCompletions = new JobCompletionData[numJobs];
+        jobCompletions = new Job[numJobs];
     }
 
     public void print() {
-        for (JobCompletionData data : jobCompletions) {
+        for (Job data : jobCompletions) {
             System.out.println("Job " + data.getJobNumber() + " has completed at "
                     + data.getCompletionTime() + " Total wait was " + data.getTotalWaitTime());
         }
@@ -58,12 +58,12 @@ public class SimulationResults {
         this.totalWaitTimePerMachine = totalWaitTimePerMachine;
     }
 
-    public JobCompletionData[] getJobCompletionData() {
+    public Job[] getJobCompletionData() {
         return jobCompletions;
     }
 
     public void setJobCompletionData(int jobNumber, int completionTime, int totalWaitTime) {
-        JobCompletionData jobCompletionData = new JobCompletionData(jobNumber, completionTime, totalWaitTime);
+        Job jobCompletionData = new Job(jobNumber, completionTime, totalWaitTime);
         jobCompletions[nextJob] = jobCompletionData;
         nextJob++;
     }

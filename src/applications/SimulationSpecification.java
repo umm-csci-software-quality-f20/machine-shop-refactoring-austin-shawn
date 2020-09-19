@@ -98,7 +98,7 @@ public class SimulationSpecification {
 	 * */
 	void startShop(MachineShopSimulator machineShopSimulator) {
 	    // Move this to startShop when ready
-	    machineShopSimulator.numMachines = getNumMachines();
+	    machineShopSimulator.setNumMachines(getNumMachines());
 	    machineShopSimulator.numJobs = getNumJobs();
 	    createEventAndMachineQueues(machineShopSimulator);
 	
@@ -112,7 +112,7 @@ public class SimulationSpecification {
 	}
 
 	private void activateJobs(MachineShopSimulator machineShopSimulator) {
-		for (int p = 1; p <= machineShopSimulator.numMachines; p++) {
+		for (int p = 1; p <= machineShopSimulator.getNumMachines(); p++) {
 			// schedule next one.
 			Job lastJob;
 			if (machineShopSimulator.machine[p].getActiveJob() == null) {// in idle or change-over

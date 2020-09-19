@@ -12,18 +12,12 @@ public class MachineShopSimulator {
 
     // data members of MachineShopSimulator
     private int timeNow; // current time
-    int numMachines; // number of machines
+    private int numMachines; // number of machines
     public int numJobs; // number of jobs
     EventList eList; // pointer to event list
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
-// getters and setters
-    public int getTimeNow(){
-        return timeNow;
-    }
-    public void setTimenow(int newTime){
-        timeNow = newTime;
-    }
+    
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         /*
@@ -76,4 +70,51 @@ public class MachineShopSimulator {
 	            numJobs--;
 	    }
 	}
+    // getters and setters
+    public int getTimeNow(){
+        return timeNow;
+    }
+    public void setTimenow(int newTime){
+        timeNow = newTime;
+    }
+    
+    public int getNumMachines() {
+        return numMachines;
+    }
+
+    public void setNumMachines(int numMachines) {
+        this.numMachines = numMachines;
+    }
+
+    public int getNumJobs() {
+        return numJobs;
+    }
+
+    public void setNumJobs(int numJobs) {
+        this.numJobs = numJobs;
+    }
+
+    public EventList geteList() {
+        return eList;
+    }
+
+    public void seteList(EventList eList) {
+        this.eList = eList;
+    }
+
+    public Machine[] getMachine() {
+        return machine;
+    }
+
+    public void setMachine(Machine[] machine) {
+        this.machine = machine;
+    }
+
+    public int getLargeTime() {
+        return largeTime;
+    }
+
+    public void setLargeTime(int largeTime) {
+        this.largeTime = largeTime;
+    }
 }

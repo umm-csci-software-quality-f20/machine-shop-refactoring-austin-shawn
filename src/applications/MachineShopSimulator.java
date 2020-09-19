@@ -32,4 +32,41 @@ public class MachineShopSimulator {
         SimulationResults simulationResults = specification.runSimulation(simulator);
         simulationResults.print();
     }
+
+	void simulate(SimulationResults simulationResults) {
+	    while (numJobs > 0) {// at least one job left
+	        int nextToFinish = eList.nextEventMachine();
+	        timeNow = eList.nextEventTime(nextToFinish);
+			// schedule next one.
+			Job lastJob;
+			if (machine[nextToFinish].getActiveJob() == null) {// in idle or change-over
+			                                            // state
+			    lastJob = null;
+			    // wait over, ready for new job
+			    if (machine[nextToFinish].getJobQ().isEmpty()) // no waiting job
+			        eList.setFinishTime(nextToFinish, largeTime);
+			    else {// take job off the queue and work on it
+			        machine[nextToFinish].setActiveJob((Job) machine[nextToFinish].getJobQ()
+			                .remove());
+			        machine[nextToFinish].setTotalWait(machine[nextToFinish].getTotalWait() + timeNow
+			                - machine[nextToFinish].getActiveJob().getArrivalTime());
+			        machine[nextToFinish].setNumTasks(machine[nextToFinish].getNumTasks() + 1);
+			        int t = machine[nextToFinish].getActiveJob().removeNextTask();
+			        eList.setFinishTime(nextToFinish, timeNow + t);
+			    }
+			} else {// task has just finished on machine[theMachine]
+			        // schedule change-over time
+			    lastJob = machine[nextToFinish].getActiveJob();
+			    machine[nextToFinish].setActiveJob(null);
+			    eList.setFinishTime(nextToFinish, timeNow
+			            + machine[nextToFinish].getChangeTime());
+			}
+	        // change job on machine nextToFinish
+	        Job theJob = lastJob;
+	        // move theJob to its next machine
+	        // decrement numJobs if theJob has finished
+	        if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
+	            numJobs--;
+	    }
+	}
 }

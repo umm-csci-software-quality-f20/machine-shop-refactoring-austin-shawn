@@ -149,7 +149,7 @@ public class SimulationSpecification {
 	    machineShopSimulator.timeNow = 0;
 	    startShop(machineShopSimulator); // initial machine loading
 	    SimulationResults simulationResults = new SimulationResults(machineShopSimulator.numJobs);
-	    simulationResults.simulate(machineShopSimulator); // run all jobs through shop
+	    machineShopSimulator.simulate(simulationResults); // run all jobs through shop
 	    simulationResults.outputStatistics(machineShopSimulator);
 	    return simulationResults;
 	}

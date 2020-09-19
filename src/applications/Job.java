@@ -59,14 +59,14 @@ class Job {
 	 */
 	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults) {
 	    if (getTaskQ().isEmpty()) {// no next task
-	        simulationResults.setJobCompletionData(getId(), machineShopSimulator.timeNow, machineShopSimulator.timeNow - getLength());
+	        simulationResults.setJobCompletionData(getId(), machineShopSimulator.getTimeNow(), machineShopSimulator.getTimeNow() - getLength());
 	        return false;
 	    } else {// theJob has a next task
 	            // get machine for next task
 	        int index = ((Task) getTaskQ().getFrontElement()).getMachine();
 	        // put on machine p's wait queue
 	        machineShopSimulator.machine[index].getJobQ().put(this);
-	        setArrivalTime(machineShopSimulator.timeNow);
+	        setArrivalTime(machineShopSimulator.getTimeNow());
 	        // if p idle, schedule immediately
 	        changeState(machineShopSimulator, index);
 	        return true;
@@ -86,17 +86,17 @@ class Job {
 			    else {// take job off the queue and work on it
 			        machineShopSimulator.machine[index].setActiveJob((Job) machineShopSimulator.machine[index].getJobQ()
 			                .remove());
-			        machineShopSimulator.machine[index].setTotalWait(machineShopSimulator.machine[index].getTotalWait() + machineShopSimulator.timeNow
-			                - machineShopSimulator.machine[index].getActiveJob().getArrivalTime());
+                    machineShopSimulator.machine[index].setTotalWait(machineShopSimulator.machine[index].getTotalWait()
+                     + machineShopSimulator.getTimeNow() - machineShopSimulator.machine[index].getActiveJob().getArrivalTime());
 			        machineShopSimulator.machine[index].setNumTasks(machineShopSimulator.machine[index].getNumTasks() + 1);
 			        int t = machineShopSimulator.machine[index].getActiveJob().removeNextTask();
-			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.timeNow + t);
+			        machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.getTimeNow() + t);
 			    }
 			} else {// task has just finished on machine[theMachine]
 			        // schedule change-over time
 			    lastJob = machineShopSimulator.machine[index].getActiveJob();
 			    machineShopSimulator.machine[index].setActiveJob(null);
-			    machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.timeNow
+			    machineShopSimulator.eList.setFinishTime(index, machineShopSimulator.getTimeNow()
 			            + machineShopSimulator.machine[index].getChangeTime());
 			}
 		}

@@ -128,7 +128,7 @@ public class SimulationSpecification {
 			        // schedule change-over time
 			    lastJob = machineShopSimulator.machine[p].getActiveJob();
 			    machineShopSimulator.machine[p].setActiveJob(null);
-			    machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.timeNow
+			    machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.getTimeNow()
 			            + machineShopSimulator.machine[p].getChangeTime());
 			}
 		}
@@ -137,16 +137,16 @@ public class SimulationSpecification {
 	private void setupJob(MachineShopSimulator machineShopSimulator, int p) {
 		machineShopSimulator.machine[p].setActiveJob((Job) machineShopSimulator.machine[p].getJobQ()
 		        .remove());
-		machineShopSimulator.machine[p].setTotalWait(machineShopSimulator.machine[p].getTotalWait() + machineShopSimulator.timeNow
+		machineShopSimulator.machine[p].setTotalWait(machineShopSimulator.machine[p].getTotalWait() + machineShopSimulator.getTimeNow()
 		        - machineShopSimulator.machine[p].getActiveJob().getArrivalTime());
 		machineShopSimulator.machine[p].setNumTasks(machineShopSimulator.machine[p].getNumTasks() + 1);
 		int t = machineShopSimulator.machine[p].getActiveJob().removeNextTask();
-		machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.timeNow + t);
+		machineShopSimulator.eList.setFinishTime(p, machineShopSimulator.getTimeNow() + t);
 	}
 
 	public  SimulationResults runSimulation(MachineShopSimulator machineShopSimulator) {
 	    machineShopSimulator.largeTime = Integer.MAX_VALUE;
-	    machineShopSimulator.timeNow = 0;
+	    machineShopSimulator.setTimenow(0);;
 	    startShop(machineShopSimulator); // initial machine loading
 	    SimulationResults simulationResults = new SimulationResults(machineShopSimulator.numJobs);
 	    machineShopSimulator.simulate(simulationResults); // run all jobs through shop

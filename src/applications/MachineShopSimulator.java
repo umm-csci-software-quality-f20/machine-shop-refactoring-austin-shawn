@@ -11,13 +11,19 @@ public class MachineShopSimulator {
     public static final String BAD_MACHINE_NUMBER_OR_TASK_TIME = "bad machine number or task time";
 
     // data members of MachineShopSimulator
-    int timeNow; // current time
+    private int timeNow; // current time
     int numMachines; // number of machines
     public int numJobs; // number of jobs
     EventList eList; // pointer to event list
     public Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
-
+// getters and setters
+    public int getTimeNow(){
+        return timeNow;
+    }
+    public void setTimenow(int newTime){
+        timeNow = newTime;
+    }
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         /*
@@ -47,7 +53,7 @@ public class MachineShopSimulator {
 			    if (nextMachine.jobQisEmpty()) // no waiting job
 			        eList.setFinishTime(nextToFinish, largeTime);
 			    else {// take job off the queue and work on it
-			        nextMachine.setActiveJob((Job) machine[nextToFinish].getJobQ()
+			        nextMachine.setActiveJob((Job) nextMachine.getJobQ()
 			                .remove());
 			        nextMachine.setTotalWait(nextMachine.getTotalWait() + timeNow
 			                - nextMachine.getActiveJob().getArrivalTime());

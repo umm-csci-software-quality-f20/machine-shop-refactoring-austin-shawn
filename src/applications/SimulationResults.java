@@ -81,7 +81,8 @@ public class SimulationResults {
         int numOfMachines = machineShopSimulator.getNumMachines();
 	    int[] totalWaitTimePerMachine = new int[numOfMachines+1];
 	    for (int i=1; i<=numOfMachines; ++i) {
-	        totalWaitTimePerMachine[i] = machineShopSimulator.machine[i].getTotalWait();
+            Machine machine = machineShopSimulator.machineAt(i);
+	        totalWaitTimePerMachine[i] = machine.getTotalWait();
 	    }
 	    setTotalWaitTimePerMachine(totalWaitTimePerMachine);
 	}
@@ -90,7 +91,8 @@ public class SimulationResults {
         int numOfMachines = machineShopSimulator.getNumMachines();
 	    int[] numTasksPerMachine = new int[numOfMachines+1];
 	    for (int i=1; i<=numOfMachines; ++i) {
-	        numTasksPerMachine[i] = machineShopSimulator.machine[i].getNumTasks();
+            Machine machine = machineShopSimulator.machineAt(i);
+	        numTasksPerMachine[i] = machine.getNumTasks();
 	    }
 	    setNumTasksPerMachine(numTasksPerMachine);
 	}

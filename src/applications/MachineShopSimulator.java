@@ -15,7 +15,7 @@ public class MachineShopSimulator {
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
-    public Machine[] machine; // array of machines
+    private Machine[] machine; // array of machines
     int largeTime; // all machines finish before this
     
     /** entry point for machine shop simulator */
@@ -106,6 +106,12 @@ public class MachineShopSimulator {
         return machine;
     }
 
+    public Machine machineAt(int i){
+        return machine[i];
+    }
+    public void setMachineAt(int i,Machine newMachine){
+        machine[i] = newMachine;
+    }
     public void setMachine(Machine[] machine) {
         this.machine = machine;
     }

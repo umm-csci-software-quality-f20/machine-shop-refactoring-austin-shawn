@@ -2,18 +2,40 @@ package applications;
 
 import dataStructures.LinkedQueue;
 
-class Job {
+public class Job {
     // data members
     private LinkedQueue taskQ; // this job's tasks
     private int length; // sum of scheduled task times
     private int arrivalTime; // arrival time at current queue
     private int id; // job identifier
 
+    private  int completionTime;
+    private  int totalWaitTime;
+    private  int jobNumber;
     // constructor
-    Job(int theId) {
+       public Job(int theId) {
         id = theId;
         taskQ = new LinkedQueue();
         // length and arrivalTime have default value 0
+    }
+
+    // Second constructor that we will try to combine with first constructor in the future
+       public Job(int jobNumber, int completionTime, int totalWaitTime) {
+        this.jobNumber = jobNumber;
+        this.completionTime = completionTime;
+        this.totalWaitTime = totalWaitTime;
+    }
+
+   public int getCompletionTime() {
+        return completionTime;
+    }
+
+    public int getTotalWaitTime() {
+        return totalWaitTime;
+    }
+
+    public int getJobNumber() {
+        return jobNumber;
     }
 
     // other methods
@@ -68,12 +90,12 @@ class Job {
 	        machineShopSimulator.machine[index].getJobQ().put(this);
 	        setArrivalTime(machineShopSimulator.timeNow);
 	        // if p idle, schedule immediately
-	        ChangeState(machineShopSimulator, index);
+	        changeState(machineShopSimulator, index);
 	        return true;
 	    }
 	}
 
-	private void ChangeState(MachineShopSimulator machineShopSimulator, int index) {
+	private void changeState(MachineShopSimulator machineShopSimulator, int index) {
 		if (machineShopSimulator.eList.nextEventTime(index) == machineShopSimulator.largeTime) {// machine is idle
 		    // schedule next one.
 			Job lastJob;

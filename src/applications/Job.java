@@ -90,12 +90,12 @@ public class Job {
 	        machineShopSimulator.machine[index].getJobQ().put(this);
 	        setArrivalTime(machineShopSimulator.timeNow);
 	        // if p idle, schedule immediately
-	        ChangeState(machineShopSimulator, index);
+	        changeState(machineShopSimulator, index);
 	        return true;
 	    }
 	}
 
-	private void ChangeState(MachineShopSimulator machineShopSimulator, int index) {
+	private void changeState(MachineShopSimulator machineShopSimulator, int index) {
 		if (machineShopSimulator.eList.nextEventTime(index) == machineShopSimulator.largeTime) {// machine is idle
 		    // schedule next one.
 			Job lastJob;

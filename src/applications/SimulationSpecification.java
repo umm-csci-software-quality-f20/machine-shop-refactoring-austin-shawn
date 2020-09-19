@@ -144,14 +144,4 @@ public class SimulationSpecification {
 		int t = machine.getActiveJob().removeNextTask();
 		shop.geteList().setFinishTime(p, shop.getTimeNow() + t);
 	}
-
-	public  SimulationResults runSimulation(MachineShopSimulator machineShopSimulator) {
-	    machineShopSimulator.setLargeTime(Integer.MAX_VALUE);
-	    machineShopSimulator.setTimenow(0);;
-	    startShop(machineShopSimulator); // initial machine loading
-	    SimulationResults simulationResults = new SimulationResults(machineShopSimulator.getNumJobs());
-	    machineShopSimulator.simulate(simulationResults); // run all jobs through shop
-	    simulationResults.outputStatistics(machineShopSimulator);
-	    return simulationResults;
-	}
 }

@@ -29,7 +29,7 @@ public class MachineShopSimulator {
         final SpecificationReader specificationReader = new SpecificationReader();
         SimulationSpecification specification = specificationReader.readSpecification();
         MachineShopSimulator simulator = new MachineShopSimulator();
-        SimulationResults simulationResults = specification.runSimulation(simulator);
+        SimulationResults simulationResults = simulator.runSimulation(specification);
         simulationResults.print();
     }
 
@@ -123,4 +123,14 @@ public class MachineShopSimulator {
     public void setLargeTime(int largeTime) {
         this.largeTime = largeTime;
     }
+
+	public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
+	    setLargeTime(Integer.MAX_VALUE);
+	    setTimenow(0);;
+	    simulationSpecification.startShop(this); // initial machine loading
+	    SimulationResults simulationResults = new SimulationResults(getNumJobs());
+	    simulate(simulationResults); // run all jobs through shop
+	    simulationResults.outputStatistics(this);
+	    return simulationResults;
+	}
 }

@@ -16,7 +16,7 @@ public class MachineShopSimulator {
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
     private Machine[] machine; // array of machines
-    int largeTime; // all machines finish before this
+    private int largeTime; // all machines finish before this
     
     /** entry point for machine shop simulator */
     public static void main(String[] args) {

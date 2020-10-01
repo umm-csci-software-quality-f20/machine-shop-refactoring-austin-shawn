@@ -88,7 +88,7 @@ public class SimulationSpecification {
 
 	void createEventAndMachineQueues(MachineShopSimulator machineShopSimulator) {
 	    // create event and machine queues
-	    machineShopSimulator.seteList(new EventList(getNumMachines(), machineShopSimulator.getLargeTime() ));
+	    machineShopSimulator.seteList(new EventList(getNumMachines(), machineShopSimulator.getMaxTime() ));
 	    machineShopSimulator.setMachine(new Machine[getNumMachines()+1]);
 	    for (int i = 1; i <= getNumMachines(); i++)
 	        machineShopSimulator.setMachineAt(i,new Machine());
@@ -122,7 +122,7 @@ public class SimulationSpecification {
 			    lastJob = null;
 			    // wait over, ready for new job
 			    if (machine.jobQisEmpty()) // no waiting job
-			        machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getLargeTime());
+			        machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getMaxTime());
 			    else {// take job off the queue and work on it
 			        setupJob(machine, machineShopSimulator, p);
 			    }

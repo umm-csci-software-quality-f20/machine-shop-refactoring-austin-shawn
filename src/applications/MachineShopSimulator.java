@@ -16,7 +16,7 @@ public class MachineShopSimulator {
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
     private Machine[] machineIndex; // array of machines
-    private int largeTime; // all machines finish before this
+    private int maxTime; // all machines finish before this
     
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
@@ -45,7 +45,7 @@ public class MachineShopSimulator {
 			    lastJob = null;
 			    // wait over, ready for new job
 			    if (nextMachine.jobQisEmpty()) // no waiting job
-			        eList.setFinishTime(nextToFinish, largeTime);
+			        eList.setFinishTime(nextToFinish, maxTime);
 			    else {// take job off the queue and work on it
                     nextMachine.setActiveJob((Job) nextMachine.getJobQ().remove());
 			        nextMachine.setTotalWait(nextMachine.getTotalWait() + timeNow
@@ -70,7 +70,7 @@ public class MachineShopSimulator {
 	    }
     }
     public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
-	    largeTime = Integer.MAX_VALUE;
+	    maxTime = Integer.MAX_VALUE;
 	    timeNow = 0;
 	    simulationSpecification.startShop(this); // initial machine loading
 	    SimulationResults simulationResults = new SimulationResults(getNumJobs());
@@ -121,8 +121,8 @@ public class MachineShopSimulator {
         this.machineIndex = machineIndex;
     }
 
-    public int getLargeTime() {
-        return largeTime;
+    public int getMaxTime() {
+        return maxTime;
     }
 
 }

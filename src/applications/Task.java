@@ -7,8 +7,8 @@ class Task {
     private int time;
 
     // constructor
-    Task(int theMachine, int theTime) {
-        machine = theMachine;
+    Task(int machineIndex, int theTime) {
+        machine = machineIndex;
         time = theTime;
     }
 

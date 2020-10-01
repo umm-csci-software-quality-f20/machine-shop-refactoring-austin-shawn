@@ -34,12 +34,12 @@ class EventList {
         return p;
     }
 
-    public int nextEventTime(int theMachine) {
-        return finishTime[theMachine];
+    public int nextEventTime(int machineIndex) {
+        return finishTime[machineIndex];
     }
 
-    public void setFinishTime(int theMachine, int theTime) {
-        finishTime[theMachine] = theTime;
+    public void setFinishTime(int machineIndex, int theTime) {
+        finishTime[machineIndex] = theTime;
     }
 
 }

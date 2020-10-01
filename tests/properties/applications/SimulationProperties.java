@@ -81,8 +81,8 @@ public class SimulationProperties {
             int numTasks = jobSpecification.getNumTasks();
             int[] specsForTasks = jobSpecification.getSpecificationsForTasks();
             for (int j=1; j<=numTasks; ++j) {
-                int theMachine = specsForTasks[2*(j-1)+1];
-                ++expectedMachineTaskCounts[theMachine];
+                int machineIndex = specsForTasks[2*(j-1)+1];
+                ++expectedMachineTaskCounts[machineIndex];
             }
         }
 

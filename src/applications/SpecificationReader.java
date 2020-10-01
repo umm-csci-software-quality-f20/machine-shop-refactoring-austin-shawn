@@ -47,12 +47,12 @@ public class SpecificationReader {
             System.out.println("Enter the tasks (machine, time)"
                     + " in process order");
             for (int j = 1; j <= tasks; j++) { // get tasks for job i
-                int theMachine = keyboard.readInteger();
+                int machineIndex = keyboard.readInteger();
                 int theTaskTime = keyboard.readInteger();
-                if (theMachine < 1 || theMachine > specification.getNumMachines()
+                if (machineIndex < 1 || machineIndex > specification.getNumMachines()
                         || theTaskTime < 1)
                     throw new MyInputException(MachineShopSimulator.BAD_MACHINE_NUMBER_OR_TASK_TIME);
-                specificationsForTasks[2*(j-1)+1] = theMachine;
+                specificationsForTasks[2*(j-1)+1] = machineIndex;
                 specificationsForTasks[2*(j-1)+2] = theTaskTime;
             }
             specification.setSpecificationsForTasks(i, specificationsForTasks);

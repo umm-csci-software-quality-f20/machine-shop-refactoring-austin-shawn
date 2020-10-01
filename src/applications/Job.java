@@ -39,8 +39,8 @@ public class Job {
     }
 
     // other methods
-    public void addTask(int theMachine, int theTime) {
-        getTaskQ().put(new Task(theMachine, theTime));
+    public void addTask(int machineIndex, int theTime) {
+        getTaskQ().put(new Task(machineIndex, theTime));
     }
 
     /**
@@ -103,7 +103,7 @@ public class Job {
 			        int t = machine.getActiveJob().removeNextTask();
 			        machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.getTimeNow() + t);
 			    }
-			} else {// task has just finished on machine[theMachine]
+			} else {// task has just finished at [machineIndex]
 			        // schedule change-over time
 			    lastJob = machine.getActiveJob();
 			    machine.setActiveJob(null);

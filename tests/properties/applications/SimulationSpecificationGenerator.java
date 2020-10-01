@@ -56,9 +56,9 @@ public class SimulationSpecificationGenerator extends Generator<SimulationSpecif
             int[] specificationsForTasks = new int[2 * numTasks + 1];
 
             for (int j = 1; j <= numTasks; ++j) {
-                int theMachine = r.nextInt(numMachines) + 1;
+                int machineIndex = r.nextInt(numMachines) + 1;
                 int theTaskTime = r.nextInt(MAX_TASK_TIME) + 1;
-                specificationsForTasks[2 * (j - 1) + 1] = theMachine;
+                specificationsForTasks[2 * (j - 1) + 1] = machineIndex;
                 specificationsForTasks[2 * (j - 1) + 2] = theTaskTime;
             }
             result.setSpecificationsForTasks(i, specificationsForTasks);

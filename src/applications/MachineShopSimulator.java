@@ -15,7 +15,7 @@ public class MachineShopSimulator {
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
-    private Machine[] machine; // array of machines
+    private Machine[] machineIndex; // array of machines
     private int largeTime; // all machines finish before this
     
     /** entry point for machine shop simulator */
@@ -39,7 +39,7 @@ public class MachineShopSimulator {
 	        timeNow = eList.nextEventTime(nextToFinish);
 			// schedule next one.
             Job lastJob;
-            Machine nextMachine = machine[nextToFinish];
+            Machine nextMachine = machineIndex[nextToFinish];
 			if (nextMachine.getActiveJob() == null) {// in idle or change-over
 			                                            // state
 			    lastJob = null;
@@ -47,15 +47,14 @@ public class MachineShopSimulator {
 			    if (nextMachine.jobQisEmpty()) // no waiting job
 			        eList.setFinishTime(nextToFinish, largeTime);
 			    else {// take job off the queue and work on it
-			        nextMachine.setActiveJob((Job) nextMachine.getJobQ()
-			                .remove());
+                    nextMachine.setActiveJob((Job) nextMachine.getJobQ().remove());
 			        nextMachine.setTotalWait(nextMachine.getTotalWait() + timeNow
 			                - nextMachine.getActiveJob().getArrivalTime());
 			        nextMachine.setNumTasks(nextMachine.getNumTasks() + 1);
 			        int t = nextMachine.getActiveJob().removeNextTask();
 			        eList.setFinishTime(nextToFinish, timeNow + t);
 			    }
-			} else {// task has just finished on machine[theMachine]
+			} else {// task has just finished at [machineIndex]
 			        // schedule change-over time
 			    lastJob = nextMachine.getActiveJob();
 			    nextMachine.setActiveJob(null);
@@ -109,17 +108,17 @@ public class MachineShopSimulator {
     }
 
     public Machine[] getMachine() {
-        return machine;
+        return machineIndex;
     }
 
     public Machine machineAt(int i){
-        return machine[i];
+        return machineIndex[i];
     }
     public void setMachineAt(int i,Machine newMachine){
-        machine[i] = newMachine;
+        machineIndex[i] = newMachine;
     }
-    public void setMachine(Machine[] machine) {
-        this.machine = machine;
+    public void setMachine(Machine[] machineIndex) {
+        this.machineIndex = machineIndex;
     }
 
     public int getLargeTime() {

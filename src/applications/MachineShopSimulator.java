@@ -34,17 +34,16 @@ public class MachineShopSimulator {
     }
 
 	void simulate(SimulationResults simulationResults) {
-	    while (numJobs > 0) {// at least one job left
+	    while (numJobs > 0) {// Run until all jobs are completed
 	        int nextToFinish = eList.nextEventMachine();
 	        timeNow = eList.nextEventTime(nextToFinish);
-			// schedule next one.
-            Job lastJob;
+			// schedule next job.
+            Job activeJob;
             Machine nextMachine = machineIndex[nextToFinish];
-			if (nextMachine.getActiveJob() == null) {// in idle or change-over
-			                                            // state
-			    lastJob = null;
+			if (nextMachine.getActiveJob() == null) {// in idle or moving to a different machine
+			    activeJob = null;
 			    // wait over, ready for new job
-			    if (nextMachine.jobQisEmpty()) // no waiting job
+			    if (nextMachine.jobQisEmpty())
 			        eList.setFinishTime(nextToFinish, maxTime);
 			    else {// take job off the queue and work on it
                     nextMachine.setActiveJob((Job) nextMachine.getJobQ().remove());
@@ -54,15 +53,14 @@ public class MachineShopSimulator {
 			        int t = nextMachine.getActiveJob().removeNextTask();
 			        eList.setFinishTime(nextToFinish, timeNow + t);
 			    }
-			} else {// task has just finished at [machineIndex]
-			        // schedule change-over time
-			    lastJob = nextMachine.getActiveJob();
+			} else {// task has just finished on [machineIndex]
+                activeJob = nextMachine.getActiveJob();
 			    nextMachine.setActiveJob(null);
 			    eList.setFinishTime(nextToFinish, timeNow
 			            + nextMachine.getChangeTime());
 			}
 	        // change job on machine nextToFinish
-	        Job theJob = lastJob;
+	        Job theJob = activeJob;
 	        // move theJob to its next machine
 	        // decrement numJobs if theJob has finished
 	        if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))

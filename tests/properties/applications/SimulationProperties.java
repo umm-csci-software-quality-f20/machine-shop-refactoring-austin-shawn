@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 @RunWith(JUnitQuickcheck.class)
 public class SimulationProperties {
     @Property
-    public void lastJobCompletesAtOverallFinishTime(
+    public void activeJobCompletesAtOverallFinishTime(
             @From(SimulationSpecificationGenerator.class)
                     SimulationSpecification specification)
     {
@@ -21,8 +21,8 @@ public class SimulationProperties {
         final SimulationResults results = simulator.runSimulation(specification);
         final int finishTime = results.getFinishTime();
         final Job[] jobCompletionData = results.getJobCompletionData();
-        final int lastJobCompletionTime = jobCompletionData[jobCompletionData.length-1].getCompletionTime();
-        assertEquals(finishTime, lastJobCompletionTime);
+        final int activeJobCompletionTime = jobCompletionData[jobCompletionData.length-1].getCompletionTime();
+        assertEquals(finishTime, activeJobCompletionTime);
     }
 
     @Property

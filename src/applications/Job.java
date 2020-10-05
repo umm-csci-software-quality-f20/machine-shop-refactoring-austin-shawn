@@ -87,13 +87,12 @@ public class Job {
 	private void changeState(MachineShopSimulator machineShopSimulator, int index) {
 		if (machineShopSimulator.geteList().nextEventTime(index) == machineShopSimulator.getMaxTime()) {// machine is idle
 		    // schedule next one.
-            Job lastJob;
+            Job activeJob;
             Machine machine = machineShopSimulator.machineAt(index);
-			if (machine.getActiveJob() == null) {// in idle or change-over
-			                                            // state
-			    lastJob = null;
+			if (machine.getActiveJob() == null) {// in idle or moving to a different machine
+                activeJob = null;
 			    // wait over, ready for new job
-			    if (machine.jobQisEmpty()) // no waiting job
+			    if (machine.jobQisEmpty())
 			        machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.getMaxTime());
 			    else {// take job off the queue and work on it
 			        machine.setActiveJob((Job) machine.getJobQ().remove());
@@ -103,9 +102,8 @@ public class Job {
 			        int t = machine.getActiveJob().removeNextTask();
 			        machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.getTimeNow() + t);
 			    }
-			} else {// task has just finished at [machineIndex]
-			        // schedule change-over time
-			    lastJob = machine.getActiveJob();
+			} else {// task has just finished on [machineIndex]
+		        activeJob = machine.getActiveJob();
 			    machine.setActiveJob(null);
 			    machineShopSimulator.geteList().setFinishTime(index, machineShopSimulator.getTimeNow()
 			            + machine.getChangeTime());

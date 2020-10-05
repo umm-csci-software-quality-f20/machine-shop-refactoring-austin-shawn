@@ -80,14 +80,13 @@ public class SimulationSpecification {
 	            int theTaskTime = getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
 	            if (j == 1)
 	                firstMachine = machineIndex; // job's first machine
-	            theJob.addTask(machineIndex, theTaskTime); // add to
-	        } // task queue
+	            theJob.addTask(machineIndex, theTaskTime); // add to task queue
+	        } 
 	        machine[firstMachine].getJobQ().put(theJob);
 	    }
 	}
 
 	void createEventAndMachineQueues(MachineShopSimulator machineShopSimulator) {
-	    // create event and machine queues
 	    machineShopSimulator.seteList(new EventList(getNumMachines(), machineShopSimulator.getMaxTime() ));
 	    machineShopSimulator.setMachine(new Machine[getNumMachines()+1]);
 	    for (int i = 1; i <= getNumMachines(); i++)
@@ -115,20 +114,19 @@ public class SimulationSpecification {
 	private void activateJobs(MachineShopSimulator machineShopSimulator) {
 		for (int p = 1; p <= machineShopSimulator.getNumMachines(); p++) {
 			// schedule next one.
-			Job lastJob;
+			Job activeJob;
 			Machine machine = machineShopSimulator.machineAt(p);
-			if (machine.getActiveJob() == null) {// in idle or change-over
-			                                            // state
-			    lastJob = null;
+			if (machine.getActiveJob() == null) {
+			                                            
+				activeJob = null;
 			    // wait over, ready for new job
-			    if (machine.jobQisEmpty()) // no waiting job
+			    if (machine.jobQisEmpty()) 
 			        machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getMaxTime());
 			    else {// take job off the queue and work on it
 			        setupJob(machine, machineShopSimulator, p);
 			    }
-			} else {// task has just finished on[machineIndex]
-			        // schedule change-over time
-			    lastJob = machine.getActiveJob();
+			} else {// task has just finished on [machineIndex]
+				activeJob = machine.getActiveJob();
 			    machine.setActiveJob(null);
 			    machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getTimeNow()
 			            + machine.getChangeTime());

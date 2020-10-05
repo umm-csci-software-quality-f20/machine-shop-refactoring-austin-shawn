@@ -66,10 +66,58 @@ public class MachineShopSimulator {
 	        Job theJob = lastJob;
 	        // move theJob to its next machine
 	        // decrement numJobs if theJob has finished
-	        if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
+	        if (theJob != null && !moveToNextMachine(theJob, simulationResults))
 	            numJobs--;
 	    }
     }
+
+    /**
+	 * move theJob to machine for its next task
+	 * 
+	 * @param job TODO
+	 * @param simulationResults TODO
+	 * @return false iff no next task
+	 */
+	boolean moveToNextMachine(Job job, SimulationResults simulationResults) {
+	    if (job.getTaskQ().isEmpty()) {// no next task
+	        simulationResults.setJobCompletionData(job.id, getTimeNow(), getTimeNow() - job.length);
+	        return false;
+	    } else {// theJob has a next task
+	            // get machine for next task
+	        int index = job.getMachineNumber();
+	        Machine machineSpec = machineAt(index);
+	        machineSpec.getJobQ().put(job);        
+	        job.arrivalTime = getTimeNow();
+	
+	        if (eList.nextEventTime(index) == getLargeTime()) {// machine is idle schedule next job
+	            
+	            Job lastJob;
+	            Job activeJob = machineSpec.getActiveJob();
+	            if (machineSpec.getActiveJob() == null) {// in idle or change-over machines
+	                                                        
+	                lastJob = null;
+	                // wait over, ready for new job
+	                if (machineSpec.jobQisEmpty()) // no waiting job
+	                    eList.setFinishTime(index, getLargeTime());
+	                else {// take job off the queue and work on it
+	                   // activeJob = (Job) machineSpec.getJobQ().remove();
+	                    machineSpec.setActiveJob((Job) machineSpec.getJobQ().remove());
+	                    machineSpec.setNumTasks(machineSpec.getNumTasks() + 1);
+	                    int timeSpent = timeNow + machineSpec.getActiveJob().removeNextTask();
+	                   eList.setFinishTime(index, timeSpent);
+	                }
+	            } else {// task has just finished on machine
+	                    // schedule change-over time
+	                lastJob = machineSpec.getActiveJob();
+	                machineSpec.setActiveJob(null);
+	                eList.setFinishTime(index, timeNow
+	                        + machineSpec.getChangeTime());
+	            }
+	        }
+	        return true;
+	    }
+    }
+    
     public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
 	    largeTime = Integer.MAX_VALUE;
 	    timeNow = 0;
@@ -125,5 +173,7 @@ public class MachineShopSimulator {
     public int getLargeTime() {
         return largeTime;
     }
+
+	
 
 }

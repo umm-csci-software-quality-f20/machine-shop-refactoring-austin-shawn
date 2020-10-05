@@ -112,34 +112,32 @@ public class SimulationSpecification {
 	}
 
 	private void activateJobs(MachineShopSimulator machineShopSimulator) {
-		for (int p = 1; p <= machineShopSimulator.getNumMachines(); p++) {
-			// schedule next one.
+		for (int i = 1; i <= machineShopSimulator.getNumMachines(); i++) {
 			Job activeJob;
-			Machine machine = machineShopSimulator.machineAt(p);
-			if (machine.getActiveJob() == null) {
-			                                            
+			Machine machine = machineShopSimulator.machineAt(i);
+			if (machine.getActiveJob() == null) {                      
 				activeJob = null;
 			    // wait over, ready for new job
 			    if (machine.jobQisEmpty()) 
-			        machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getMaxTime());
+			        machineShopSimulator.geteList().setFinishTime(i, machineShopSimulator.getMaxTime());
 			    else {// take job off the queue and work on it
-			        setupJob(machine, machineShopSimulator, p);
+			        setupJob(machine, machineShopSimulator, i);
 			    }
 			} else {// task has just finished on [machineIndex]
 				activeJob = machine.getActiveJob();
 			    machine.setActiveJob(null);
-			    machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getTimeNow()
+			    machineShopSimulator.geteList().setFinishTime(i, machineShopSimulator.getTimeNow()
 			            + machine.getChangeTime());
 			}
 		}
 	}
 
-	private void setupJob(Machine machine, MachineShopSimulator shop, int p) {
+	private void setupJob(Machine machine, MachineShopSimulator shop, int i) {
 		machine.setActiveJob((Job) machine.getJobQ().remove());
 		machine.setTotalWait(machine.getTotalWait() + shop.getTimeNow()
 		        - machine.getActiveJob().getArrivalTime());
 		machine.setNumTasks(machine.getNumTasks() + 1);
-		int t = machine.getActiveJob().removeNextTask();
-		shop.geteList().setFinishTime(p, shop.getTimeNow() + t);
+		int timeSpent = machine.getActiveJob().removeNextTask();
+		shop.geteList().setFinishTime(i, shop.getTimeNow() + timeSpent);
 	}
 }

@@ -106,6 +106,13 @@ public class MachineShopSimulator {
 	    simulationResults.outputStatistics(this);
 	    return simulationResults;
 	}
+	public void createEventAndMachineQueues(int numOfMachines) {
+	    // create event and machine queues
+	    eList = new EventList(numOfMachines, largeTime);
+	    this.machine = new Machine[numOfMachines+1];
+		for (int i = 1; i <= numOfMachines; i++)
+			this.machine[i] = new Machine();
+	}
     // getters and setters
     public int getTimeNow(){
         return timeNow;
@@ -149,7 +156,4 @@ public class MachineShopSimulator {
     public int getLargeTime() {
         return largeTime;
     }
-
-	
-
 }

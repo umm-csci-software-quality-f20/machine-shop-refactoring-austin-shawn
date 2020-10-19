@@ -60,7 +60,7 @@ public class SimulationSpecification {
     }
 
 	public void setMachineChangeOverTimes(MachineShopSimulator machineShopSimulator) {
-	    for (int i = 1; i<=getNumMachines(); ++i) {
+	    for (int i = 1; i<=numMachines; ++i) {
 			Machine machine =machineShopSimulator.machineAt(i);
 	        machine.setChangeTime(getChangeOverTimes(i));
 	    }
@@ -86,30 +86,22 @@ public class SimulationSpecification {
 	    }
 	}
 
-	void createEventAndMachineQueues(MachineShopSimulator machineShopSimulator) {
-	    // create event and machine queues
-	    machineShopSimulator.seteList(new EventList(getNumMachines(), machineShopSimulator.getLargeTime() ));
-	    machineShopSimulator.setMachine(new Machine[getNumMachines()+1]);
-	    for (int i = 1; i <= getNumMachines(); i++)
-	        machineShopSimulator.setMachineAt(i,new Machine());
-	}
-
 	/** load first jobs onto each machine
-	 * @param machineShopSimulator TODO
+	 * @param shopSim TODO
 	 * */
-	void startShop(MachineShopSimulator machineShopSimulator) {
+	void startShop(MachineShopSimulator shopSim) {
 	    // Move this to startShop when ready
-	    machineShopSimulator.setNumMachines(getNumMachines());
-	    machineShopSimulator.setNumJobs(getNumJobs());
-	    createEventAndMachineQueues(machineShopSimulator);
+	    shopSim.setNumMachines(getNumMachines());
+	    shopSim.setNumJobs(getNumJobs());
+	    shopSim.createEventAndMachineQueues(this.numMachines);
 	
 	    // Move this to startShop when ready
-	    setMachineChangeOverTimes(machineShopSimulator);
+	    setMachineChangeOverTimes(shopSim);
 	
 	    // Move this to startShop when ready
-	    setUpJobs(machineShopSimulator.getMachine());
+	    setUpJobs(shopSim.getMachine());
 	
-	    activateJobs(machineShopSimulator);
+	    activateJobs(shopSim);
 	}
 
 	private void activateJobs(MachineShopSimulator shopSim) {

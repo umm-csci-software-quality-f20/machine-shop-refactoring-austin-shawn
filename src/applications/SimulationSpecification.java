@@ -6,8 +6,7 @@ public class SimulationSpecification {
     private int numMachines;
     private int numJobs;
     private int[] changeOverTimes;
-    private JobSpecification[] jobSpecifications;
-
+    private Task[] taskSpecifications;
     public void setNumMachines(int numMachines) {
         this.numMachines = numMachines;
     }
@@ -33,15 +32,15 @@ public class SimulationSpecification {
     }
 
     public void setSpecificationsForTasks(int jobNumber, int[] specificationsForTasks) {
-        jobSpecifications[jobNumber].setSpecificationsForTasks(specificationsForTasks);
+        taskSpecifications[jobNumber].setSpecificationsForTasks(specificationsForTasks);
     }
 
-    public void setJobSpecification(JobSpecification[] jobSpecifications) {
-        this.jobSpecifications = jobSpecifications;
+    public void setJobSpecification(Task[] taskSpecifications) {
+        this.taskSpecifications = taskSpecifications;
     }
 
-    public JobSpecification getJobSpecifications(int jobNumber) {
-        return jobSpecifications[jobNumber];
+    public Task getJobSpecifications(int jobNumber) {
+        return taskSpecifications[jobNumber];
     }
 
     @Override
@@ -52,7 +51,7 @@ public class SimulationSpecification {
         builder.append("change overs: ").append(Arrays.toString(changeOverTimes));
         for (int i=1; i<=numJobs; ++i) {
             builder.append("; job ").append(i).append(" tasks: ");
-            builder.append(Arrays.toString(jobSpecifications[i].getSpecificationsForTasks()));
+            builder.append(Arrays.toString(taskSpecifications[i].getSpecificationsForTasks()));
         }
 
         builder.append(">");
@@ -68,7 +67,7 @@ public class SimulationSpecification {
 
 	void setUpJobs(Machine [] machine) {
 	    // input the jobs
-	    Job theJob;
+        Job theJob;
 	    for (int i = 1; i <= getNumJobs(); i++) {
 	        int tasks = getJobSpecifications(i).getNumTasks();
 	        int firstMachine = 0; // machine for first task
@@ -76,8 +75,10 @@ public class SimulationSpecification {
 	        // create the job
 	        theJob = new Job(i);
 	        for (int j = 1; j <= tasks; j++) {
-	            int theMachine = getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
-	            int theTaskTime = getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
+				int index = 2*(j-1) + 1;
+				int theMachine = getJobSpecifications(i).getSpecificationsForTasks()[index];
+				index = 2*(j-1) +2;
+	            int theTaskTime = getJobSpecifications(i).getSpecificationsForTasks()[index];
 	            if (j == 1)
 	                firstMachine = theMachine; // job's first machine
 	            theJob.addTask(theMachine, theTaskTime); // add to

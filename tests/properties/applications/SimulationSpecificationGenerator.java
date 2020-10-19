@@ -44,9 +44,9 @@ public class SimulationSpecificationGenerator extends Generator<SimulationSpecif
         }
         result.setChangeOverTimes(changeOverTimes);
 
-        JobSpecification[] jobSpecifications = new JobSpecification[numJobs + 1];
+        Task[] jobSpecifications = new Task[numJobs + 1];
         for (int i=1; i<=numJobs; ++i) {
-            jobSpecifications[i] = new JobSpecification();
+            jobSpecifications[i] = new Task(i, i);
         }
         result.setJobSpecification(jobSpecifications);
         for (int i=1; i<=numJobs; ++i) {
@@ -112,9 +112,9 @@ public class SimulationSpecificationGenerator extends Generator<SimulationSpecif
         }
         smallerSpec.setChangeOverTimes(newChangeOvers);
 
-        JobSpecification[] newJobSpecs = new JobSpecification[numJobs+1];
+        Task[] newJobSpecs = new Task[numJobs+1];
         for (int i=1; i<=numJobs; ++i) {
-            JobSpecification jobSpec = spec.getJobSpecifications(i);
+            Task jobSpec = spec.getJobSpecifications(i);
             int numTasks = jobSpec.getNumTasks();
             int[] specsForTasks = jobSpec.getSpecificationsForTasks();
             int numTasksOnThisMachine = 0;
@@ -144,7 +144,7 @@ public class SimulationSpecificationGenerator extends Generator<SimulationSpecif
                     ++k;
                 }
             }
-            JobSpecification newJobSpec = new JobSpecification();
+            Task newJobSpec = new Task(newNumTasks, newNumTasks);
             newJobSpec.setNumTasks(newNumTasks);
             newJobSpec.setSpecificationsForTasks(newSpecsForTasks);
             newJobSpecs[i] = newJobSpec;
@@ -172,7 +172,7 @@ public class SimulationSpecificationGenerator extends Generator<SimulationSpecif
 
         int jobToRemove = r.nextInt(originalNumJobs) + 1;
 
-        JobSpecification[] newJobSpecs = new JobSpecification[originalNumJobs];
+        Task[] newJobSpecs = new Task[originalNumJobs];
         for (int i=1, j=1; i<=originalNumJobs; ++i) {
             if (i != jobToRemove) {
                 newJobSpecs[j] = spec.getJobSpecifications(i);

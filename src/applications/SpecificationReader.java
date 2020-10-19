@@ -30,9 +30,9 @@ public class SpecificationReader {
 
     private void readJobSpecifications() {
         // input the jobs
-        JobSpecification[] jobSpecifications = new JobSpecification[specification.getNumJobs()+1];
+        Task[] jobSpecifications = new Task[specification.getNumJobs()+1];
         for (int i=1; i <= specification.getNumJobs(); i++) {
-            jobSpecifications[i] = new JobSpecification();
+            jobSpecifications[i] = new Task(i, i);
         }
         specification.setJobSpecification(jobSpecifications);
         for (int i = 1; i <= specification.getNumJobs(); i++) {

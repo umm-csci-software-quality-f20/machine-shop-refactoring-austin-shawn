@@ -77,7 +77,7 @@ public class SimulationProperties {
         int[] expectedMachineTaskCounts = new int[numMachines+1];
 
         for (int i=1; i<=numJobs; ++i) {
-            JobSpecification jobSpecification = specification.getJobSpecifications(i);
+            Task jobSpecification = specification.getJobSpecifications(i);
             int numTasks = jobSpecification.getNumTasks();
             int[] specsForTasks = jobSpecification.getSpecificationsForTasks();
             for (int j=1; j<=numTasks; ++j) {

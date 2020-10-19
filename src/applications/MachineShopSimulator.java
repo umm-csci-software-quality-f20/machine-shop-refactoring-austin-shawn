@@ -11,10 +11,10 @@ public class MachineShopSimulator {
     public static final String BAD_MACHINE_NUMBER_OR_TASK_TIME = "bad machine number or task time";
 
     // data members of MachineShopSimulator
-    private int timeNow; // current time
+    int timeNow; // current time
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
-    private EventList eList; // pointer to event list
+    EventList eList; // pointer to event list
     private Machine[] machine; // array of machines
     private int largeTime; // all machines finish before this
     
@@ -80,40 +80,24 @@ public class MachineShopSimulator {
 	 */
 	boolean moveToNextMachine(Job job, SimulationResults simulationResults) {
 	    if (job.getTaskQ().isEmpty()) {// no next task
-	        simulationResults.setJobCompletionData(job.id, getTimeNow(), getTimeNow() - job.length);
+	        simulationResults.setJobCompletionData(job, timeNow);
 	        return false;
 	    } else {// theJob has a next task
 	            // get machine for next task
 	        int index = job.getMachineNumber();
 	        Machine machineSpec = machineAt(index);
 	        machineSpec.getJobQ().put(job);        
-	        job.arrivalTime = getTimeNow();
+	        job.setArrivalTime(getTimeNow());
 	
 	        if (eList.nextEventTime(index) == getLargeTime()) {// machine is idle schedule next job
-	            
-	            if (machineSpec.getActiveJob() == null) {// in idle or change-over machines
-	                                                        
-	                // wait over, ready for new job
-	                if (machineSpec.jobQisEmpty()) // no waiting job
-	                    eList.setFinishTime(index, getLargeTime());
-	                else {// take job off the queue and work on it
-	                   // activeJob = (Job) machineSpec.getJobQ().remove();
-	                    machineSpec.setActiveJob((Job) machineSpec.getJobQ().remove());
-	                    machineSpec.incrementNumTasks();
-	                    int timeSpent = timeNow + machineSpec.getActiveJob().removeNextTask();
-	                   eList.setFinishTime(index, timeSpent);
-	                }
-	            } else {// task has just finished on machine
-	                    // schedule change-over time
-	                machineSpec.setActiveJob(null);
-	                eList.setFinishTime(index, timeNow + machineSpec.getChangeTime());
-	            }
+				int finishTime = machineSpec.createFinishTime( timeNow, largeTime);
+				eList.setFinishTime(index, finishTime);
 	        }
 	        return true;
 	    }
     }
-    
-    public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
+
+	public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
 	    largeTime = Integer.MAX_VALUE;
 	    timeNow = 0;
 	    simulationSpecification.startShop(this); // initial machine loading

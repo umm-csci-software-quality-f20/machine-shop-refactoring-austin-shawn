@@ -54,4 +54,24 @@ class Machine {
     public void setActiveJob(Job activeJob) {
         this.activeJob = activeJob;
     }
+
+	public int createFinishTime(int timeNow,int largeTime) {
+        int timeSpent = 0;
+        if (getActiveJob() == null) {// in idle or change-over machines                         
+		    // wait over, ready for new job
+            if (jobQisEmpty()) // no waiting job
+            timeSpent = largeTime;
+		    else {// take job off the queue and work on it
+		       // activeJob = (Job) machineSpec.getJobQ().remove();
+		        setActiveJob((Job) getJobQ().remove());
+		        incrementNumTasks();
+                timeSpent = timeNow + getActiveJob().removeNextTask();
+		    }
+		} else {// task has just finished on machine
+		        // schedule change-over time
+            setActiveJob(null);
+            timeSpent = timeNow + getChangeTime();
+        }
+        return timeSpent;
+	}
 }

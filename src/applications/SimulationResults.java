@@ -62,8 +62,8 @@ public class SimulationResults {
         return jobCompletions;
     }
 
-    public void setJobCompletionData(int jobNumber, int completionTime, int totalWaitTime) {
-        Job jobCompletionData = new Job(jobNumber, completionTime, totalWaitTime);
+    public void setJobCompletionData(Job job, int completionTime) {
+        Job jobCompletionData = new Job(job.getId(), completionTime, completionTime - job.getLength());
         jobCompletions[nextJob] = jobCompletionData;
         nextJob++;
     }

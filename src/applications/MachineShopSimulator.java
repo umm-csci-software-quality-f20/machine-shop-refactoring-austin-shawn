@@ -51,7 +51,7 @@ public class MachineShopSimulator {
 			                .remove());
 			        nextMachine.setTotalWait(nextMachine.getTotalWait() + timeNow
 			                - nextMachine.getActiveJob().getArrivalTime());
-			        nextMachine.setNumTasks(nextMachine.getNumTasks() + 1);
+			        nextMachine.incrementNumTasks();
 			        int t = nextMachine.getActiveJob().removeNextTask();
 			        eList.setFinishTime(nextToFinish, timeNow + t);
 			    }
@@ -91,24 +91,20 @@ public class MachineShopSimulator {
 	
 	        if (eList.nextEventTime(index) == getLargeTime()) {// machine is idle schedule next job
 	            
-	            Job lastJob;
-	            Job activeJob = machineSpec.getActiveJob();
 	            if (machineSpec.getActiveJob() == null) {// in idle or change-over machines
 	                                                        
-	                lastJob = null;
 	                // wait over, ready for new job
 	                if (machineSpec.jobQisEmpty()) // no waiting job
 	                    eList.setFinishTime(index, getLargeTime());
 	                else {// take job off the queue and work on it
 	                   // activeJob = (Job) machineSpec.getJobQ().remove();
 	                    machineSpec.setActiveJob((Job) machineSpec.getJobQ().remove());
-	                    machineSpec.setNumTasks(machineSpec.getNumTasks() + 1);
+	                    machineSpec.incrementNumTasks();
 	                    int timeSpent = timeNow + machineSpec.getActiveJob().removeNextTask();
 	                   eList.setFinishTime(index, timeSpent);
 	                }
 	            } else {// task has just finished on machine
 	                    // schedule change-over time
-	                lastJob = machineSpec.getActiveJob();
 	                machineSpec.setActiveJob(null);
 	                eList.setFinishTime(index, timeNow + machineSpec.getChangeTime());
 	            }

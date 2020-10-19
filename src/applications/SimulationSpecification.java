@@ -140,7 +140,7 @@ public class SimulationSpecification {
 		machine.setActiveJob((Job) machine.getJobQ().remove());
 		machine.setTotalWait(machine.getTotalWait() + shop.getTimeNow()
 		        - machine.getActiveJob().getArrivalTime());
-		machine.setNumTasks(machine.getNumTasks() + 1);
+		machine.incrementNumTasks();
 		int t = machine.getActiveJob().removeNextTask();
 		shop.geteList().setFinishTime(p, shop.getTimeNow() + t);
 	}

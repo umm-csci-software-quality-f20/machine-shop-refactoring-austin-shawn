@@ -43,8 +43,8 @@ class Machine {
         return numTasks;
     }
 
-    public void setNumTasks(int numTasks) {
-        this.numTasks = numTasks;
+    public void incrementNumTasks() {// setNumTasks was only ever used to increment the num of tasks by one so incre
+        this.numTasks++;
     }
 
     public Job getActiveJob() {

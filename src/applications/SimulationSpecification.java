@@ -77,7 +77,7 @@ public class SimulationSpecification {
 	        for (int j = 1; j <= tasks; j++) {
 				int index = 2*(j-1) + 1;
 				int theMachine = getJobSpecifications(i).getSpecificationsForTasks()[index];
-				index = 2*(j-1) +2;
+				index++;
 	            int theTaskTime = getJobSpecifications(i).getSpecificationsForTasks()[index];
 	            if (j == 1)
 	                firstMachine = theMachine; // job's first machine

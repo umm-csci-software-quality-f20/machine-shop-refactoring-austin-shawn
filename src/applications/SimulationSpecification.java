@@ -112,36 +112,12 @@ public class SimulationSpecification {
 	    activateJobs(machineShopSimulator);
 	}
 
-	private void activateJobs(MachineShopSimulator machineShopSimulator) {
-		for (int p = 1; p <= machineShopSimulator.getNumMachines(); p++) {
+	private void activateJobs(MachineShopSimulator shopSim) {
+		for (int index = 1; index <= shopSim.getNumMachines(); index++) {
 			// schedule next one.
-			Job lastJob;
-			Machine machine = machineShopSimulator.machineAt(p);
-			if (machine.getActiveJob() == null) {// in idle or change-over
-			                                            // state
-			    lastJob = null;
-			    // wait over, ready for new job
-			    if (machine.jobQisEmpty()) // no waiting job
-			        machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getLargeTime());
-			    else {// take job off the queue and work on it
-			        setupJob(machine, machineShopSimulator, p);
-			    }
-			} else {// task has just finished on machine[theMachine]
-			        // schedule change-over time
-			    lastJob = machine.getActiveJob();
-			    machine.setActiveJob(null);
-			    machineShopSimulator.geteList().setFinishTime(p, machineShopSimulator.getTimeNow()
-			            + machine.getChangeTime());
-			}
+			Machine machine = shopSim.machineAt(index);
+			int finishTime = machine.createFinishTime(shopSim.getTimeNow(), shopSim.getLargeTime() );
+			shopSim.geteList().setFinishTime(index, finishTime);
 		}
-	}
-
-	private void setupJob(Machine machine, MachineShopSimulator shop, int p) {
-		machine.setActiveJob((Job) machine.getJobQ().remove());
-		machine.setTotalWait(machine.getTotalWait() + shop.getTimeNow()
-		        - machine.getActiveJob().getArrivalTime());
-		machine.incrementNumTasks();
-		int t = machine.getActiveJob().removeNextTask();
-		shop.geteList().setFinishTime(p, shop.getTimeNow() + t);
 	}
 }

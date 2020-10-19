@@ -108,7 +108,7 @@ public class SimulationSpecification {
 		for (int index = 1; index <= shopSim.getNumMachines(); index++) {
 			// schedule next one.
 			Machine machine = shopSim.machineAt(index);
-			int finishTime = machine.createFinishTime(shopSim.getTimeNow(), shopSim.getLargeTime() );
+			int finishTime = machine.createFinishTime(shopSim.getTimeNow(), shopSim.largeTime );
 			shopSim.geteList().setFinishTime(index, finishTime);
 		}
 	}

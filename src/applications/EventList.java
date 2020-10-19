@@ -38,8 +38,8 @@ class EventList {
         return finishTime[machineIndex];
     }
 
-    public void setFinishTime(int machineIndex, int theTime) {
-        finishTime[machineIndex] = theTime;
+    public void setFinishTime(int machineIndex, int timeSpent) {
+        finishTime[machineIndex] = timeSpent;
     }
 
 }

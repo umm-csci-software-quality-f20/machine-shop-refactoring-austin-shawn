@@ -39,17 +39,17 @@ public class Job {
     }
 
     // other methods
-    public void addTask(int machineIndex, int theTime) {
-        getTaskQ().put(new Task(machineIndex, theTime));
+    public void addTask(int machineIndex, int timeSpent) {
+        getTaskQ().put(new Task(machineIndex, timeSpent));
     }
 
     /**
      * remove next task of job and return its time also update length
      */
     public int removeNextTask() {
-        int theTime = ((Task) getTaskQ().remove()).getTime();
-        length = length + theTime;
-        return theTime;
+        int timeSpent = ((Task) getTaskQ().remove()).getTime();
+        length = length + timeSpent;
+        return timeSpent;
     }
 
     public LinkedQueue getTaskQ() {

@@ -7,9 +7,9 @@ class Task {
     private int time;
 
     // constructor
-    Task(int machineIndex, int theTime) {
+    Task(int machineIndex, int timeSpent) {
         machine = machineIndex;
-        time = theTime;
+        time = timeSpent;
     }
 
     public int getMachine() {

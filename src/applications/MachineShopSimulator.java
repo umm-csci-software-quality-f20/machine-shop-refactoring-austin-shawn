@@ -110,8 +110,7 @@ public class MachineShopSimulator {
 	                    // schedule change-over time
 	                lastJob = machineSpec.getActiveJob();
 	                machineSpec.setActiveJob(null);
-	                eList.setFinishTime(index, timeNow
-	                        + machineSpec.getChangeTime());
+	                eList.setFinishTime(index, timeNow + machineSpec.getChangeTime());
 	            }
 	        }
 	        return true;
@@ -122,7 +121,7 @@ public class MachineShopSimulator {
 	    largeTime = Integer.MAX_VALUE;
 	    timeNow = 0;
 	    simulationSpecification.startShop(this); // initial machine loading
-	    SimulationResults simulationResults = new SimulationResults(getNumJobs());
+	    SimulationResults simulationResults = new SimulationResults(numJobs);
 	    simulate(simulationResults); // run all jobs through shop
 	    simulationResults.outputStatistics(this);
 	    return simulationResults;
@@ -140,10 +139,7 @@ public class MachineShopSimulator {
         this.numMachines = numMachines;
     }
 
-    public int getNumJobs() {
-        return numJobs;
-    }
-
+   
     public void setNumJobs(int numJobs) {
         this.numJobs = numJobs;
     }

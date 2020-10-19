@@ -9,24 +9,26 @@ public class Job {
     int arrivalTime; // arrival time at current queue
     int id; // job identifier
 
-    private  int completionTime;
-    private  int totalWaitTime;
-    private  int jobNumber;
+    private int completionTime;
+    private int totalWaitTime;
+    private int jobNumber;
+
     // constructor
-       public Job(int theId) {
+    public Job(int theId) {
         id = theId;
         taskQ = new LinkedQueue();
         // length and arrivalTime have default value 0
     }
 
-    // Second constructor that we will try to combine with first constructor in the future
-       public Job(int jobNumber, int completionTime, int totalWaitTime) {
+    // Second constructor that we will try to combine with first constructor in the
+    // future
+    public Job(int jobNumber, int completionTime, int totalWaitTime) {
         this.jobNumber = jobNumber;
         this.completionTime = completionTime;
         this.totalWaitTime = totalWaitTime;
     }
 
-   public int getCompletionTime() {
+    public int getCompletionTime() {
         return completionTime;
     }
 
@@ -60,11 +62,8 @@ public class Job {
         return arrivalTime;
     }
 
-
-	public int getMachineNumber(){
-        return  ((Task) getTaskQ().getFrontElement()).getMachine();
+    public int getMachineNumber() {
+        return ((Task) getTaskQ().getFrontElement()).getMachine();
     }
-
-
 
 }

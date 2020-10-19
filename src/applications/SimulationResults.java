@@ -70,9 +70,9 @@ public class SimulationResults {
     /** output wait times at machines
 	 * @param machineShopSimulator TODO
 	 * */
-	void outputStatistics(MachineShopSimulator machineShopSimulator) {
-	    setFinishTime(machineShopSimulator.getTimeNow());
-	    setNumMachines(machineShopSimulator.getNumMachines());
+	void outputStatistics(MachineShopSimulator machineShopSimulator, int timeNow, int numMachines) {
+	    setFinishTime(timeNow);
+	    setNumMachines(numMachines);
 	    setNumTasksPerMachine(machineShopSimulator);
 	    setTotalWaitTimePerMachine(machineShopSimulator);
 	}

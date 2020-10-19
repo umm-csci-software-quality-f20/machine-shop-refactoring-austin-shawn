@@ -3,7 +3,7 @@ package applications;
 import java.util.Arrays;
 
 public class SimulationSpecification {
-    private int numMachines;
+    int numMachines;
     private int numJobs;
     private int[] changeOverTimes;
     private JobSpecification[] jobSpecifications;
@@ -86,30 +86,4 @@ public class SimulationSpecification {
 	    }
 	}
 
-	/** load first jobs onto each machine
-	 * @param shopSim TODO
-	 * */
-	void startShop(MachineShopSimulator shopSim) {
-	    // Move this to startShop when ready
-	    shopSim.setNumMachines(getNumMachines());
-	    shopSim.setNumJobs(getNumJobs());
-	    shopSim.createEventAndMachineQueues(this.numMachines);
-	
-	    // Move this to startShop when ready
-	    setMachineChangeOverTimes(shopSim);
-	
-	    // Move this to startShop when ready
-	    setUpJobs(shopSim.getMachine());
-	
-	    activateJobs(shopSim);
-	}
-
-	private void activateJobs(MachineShopSimulator shopSim) {
-		for (int index = 1; index <= shopSim.getNumMachines(); index++) {
-			// schedule next one.
-			Machine machine = shopSim.machineAt(index);
-			int finishTime = machine.createFinishTime(shopSim.getTimeNow(), shopSim.largeTime );
-			shopSim.geteList().setFinishTime(index, finishTime);
-		}
-	}
 }

@@ -88,7 +88,7 @@ public class MachineShopSimulator {
 	        int index = job.getMachineNumber();
 	        Machine machineSpec = machineAt(index);
 	        machineSpec.getJobQ().put(job);        
-	        job.setArrivalTime(getTimeNow());
+	        job.setArrivalTime(timeNow);
 	
 	        if (eList.nextEventTime(index) == largeTime) {// machine is idle schedule next job
 				int finishTime = machineSpec.createFinishTime( timeNow, largeTime);
@@ -100,10 +100,10 @@ public class MachineShopSimulator {
 
 	public  SimulationResults runSimulation(SimulationSpecification simulationSpecification) {
 	    timeNow = 0;
-	    simulationSpecification.startShop(this); // initial machine loading
+	    startShop(simulationSpecification); // initial machine loading
 	    SimulationResults simulationResults = new SimulationResults(numJobs);
 	    simulate(simulationResults); // run all jobs through shop
-	    simulationResults.outputStatistics(this);
+	    simulationResults.outputStatistics(this,timeNow, numMachines);
 	    return simulationResults;
 	}
 	public void createEventAndMachineQueues(int numOfMachines) {
@@ -113,7 +113,8 @@ public class MachineShopSimulator {
 		for (int i = 1; i <= numOfMachines; i++)
 			this.machine[i] = new Machine();
 	}
-    // getters and setters
+  
+	// getters and setters
     public int getTimeNow(){
         return timeNow;
     }
@@ -126,17 +127,12 @@ public class MachineShopSimulator {
         this.numMachines = numMachines;
     }
 
-   
     public void setNumJobs(int numJobs) {
         this.numJobs = numJobs;
     }
 
     public EventList geteList() {
         return eList;
-    }
-
-    public void seteList(EventList eList) {
-        this.eList = eList;
     }
 
     public Machine[] getMachine() {
@@ -149,8 +145,27 @@ public class MachineShopSimulator {
     public void setMachineAt(int i,Machine newMachine){
         machine[i] = newMachine;
     }
-    public void setMachine(Machine[] machine) {
-        this.machine = machine;
-    }
+
+	/** load first jobs onto each machine
+	 * @param simSpecs TODO
+	 * */
+	void startShop(SimulationSpecification simSpecs) {
+		// Move this to startShop when ready
+		numMachines = simSpecs.getNumMachines();
+		numJobs = simSpecs.getNumJobs();
+	    createEventAndMachineQueues(numMachines);
+	
+	    // Move this to startShop when ready
+	    simSpecs.setMachineChangeOverTimes(this);
+	
+	    // Move this to startShop when ready
+	    simSpecs.setUpJobs(getMachine());
+	// activate all jobs
+		for (int index = 1; index <= numMachines; index++) {
+			// schedule next one.
+			Machine machine = machineAt(index);
+			int finishTime = machine.createFinishTime(timeNow, largeTime );
+			geteList().setFinishTime(index, finishTime);
+		}	}
 
 }

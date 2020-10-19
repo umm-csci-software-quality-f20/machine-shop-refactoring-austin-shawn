@@ -70,14 +70,14 @@ public class SimulationResults {
     /** output wait times at machines
 	 * @param machineShopSimulator TODO
 	 * */
-	void outputStatistics(MachineShopSimulator machineShopSimulator, int timeNow, int numMachines) {
+	public void outputStatistics(MachineShopSimulator machineShopSimulator, int timeNow, int numMachines) {
 	    setFinishTime(timeNow);
 	    setNumMachines(numMachines);
 	    setNumTasksPerMachine(machineShopSimulator);
 	    setTotalWaitTimePerMachine(machineShopSimulator);
 	}
 
-	void setTotalWaitTimePerMachine(MachineShopSimulator machineShopSimulator) {
+	private void setTotalWaitTimePerMachine(MachineShopSimulator machineShopSimulator) {
         int numOfMachines = machineShopSimulator.getNumMachines();
 	    int[] totalWaitTimePerMachine = new int[numOfMachines+1];
 	    for (int i=1; i<=numOfMachines; ++i) {
@@ -87,7 +87,7 @@ public class SimulationResults {
 	    setTotalWaitTimePerMachine(totalWaitTimePerMachine);
 	}
 
-	void setNumTasksPerMachine(MachineShopSimulator machineShopSimulator) {
+	private void setNumTasksPerMachine(MachineShopSimulator machineShopSimulator) {
         int numOfMachines = machineShopSimulator.getNumMachines();
 	    int[] numTasksPerMachine = new int[numOfMachines+1];
 	    for (int i=1; i<=numOfMachines; ++i) {
